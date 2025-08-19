@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line, Text } from 'mafs';
+import { Line, Text, useTransformContext } from 'mafs';
 import {
     FIELD_LENGTH,
     END_ZONE,
@@ -9,6 +9,9 @@ import {
 } from './field-constants';
 
 export const FieldGridLines = () => {
+    const { viewTransform } = useTransformContext();
+    const showOneYardGrid = viewTransform['0'] > 15;
+
     const yardNumberAtX = (x: number) => {
         const fromLeftGoal = Math.max(0, x - END_ZONE);
         const fromRightGoal = Math.max(0, FIELD_LENGTH - END_ZONE - x);
@@ -46,15 +49,16 @@ export const FieldGridLines = () => {
     return (
         <>
             {/* 1-yard vertical grid between hashes */}
-            {tickXs.map((x) => (
-                <Line.Segment
-                    key={`grid-${x}`}
-                    point1={[x, 0]}
-                    point2={[x, FIELD_WIDTH]}
-                    color="white"
-                    opacity={0.15}
-                />
-            ))}
+            {showOneYardGrid &&
+                tickXs.map((x) => (
+                    <Line.Segment
+                        key={`grid-${x}`}
+                        point1={[x, 0]}
+                        point2={[x, FIELD_WIDTH]}
+                        color="white"
+                        opacity={0.15}
+                    />
+                ))}
             {twoPointFiveYardXs.map((x) => (
                 <Line.Segment
                     key={`five-${x}`}
@@ -66,15 +70,16 @@ export const FieldGridLines = () => {
                 />
             ))}
             {/* 1-yard horizontal grid */}
-            {tickYs.map((y) => (
-                <Line.Segment
-                    key={`hgrid-${y}`}
-                    point1={[0, y]}
-                    point2={[FIELD_LENGTH, y]}
-                    color="white"
-                    opacity={0.15}
-                />
-            ))}
+            {showOneYardGrid &&
+                tickYs.map((y) => (
+                    <Line.Segment
+                        key={`hgrid-${y}`}
+                        point1={[0, y]}
+                        point2={[FIELD_LENGTH, y]}
+                        color="white"
+                        opacity={0.15}
+                    />
+                ))}
             {fiveYardYs.map((y) => (
                 <Line.Segment
                     key={`hfive-${y}`}
