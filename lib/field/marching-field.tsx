@@ -15,7 +15,7 @@ export const MarchingField = ({
     return (
         <Mafs
             viewBox={{ x: [0, FIELD_LENGTH], y: [0, FIELD_WIDTH] }}
-            zoom={{ min: 0.9, max: 4 }}
+            zoom={{ min: 0.9, max: 10 }}
             pan
             preserveAspectRatio="contain"
             height={document.documentElement.clientHeight}

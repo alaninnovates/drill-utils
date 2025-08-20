@@ -16,6 +16,9 @@ export default function Page() {
         dotToFieldCoordinate(sampleDotbook[0]),
     ]);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [intervalCache, setIntervalCache] = useState<NodeJS.Timeout | null>(
+        null,
+    );
 
     return (
         <div style={{ height: '100vh' }}>
@@ -44,6 +47,10 @@ export default function Page() {
                         <Button
                             onClick={() => {
                                 if (isPlaying) {
+                                    if (intervalCache) {
+                                        clearInterval(intervalCache);
+                                    }
+                                    setIntervalCache(null);
                                     setIsPlaying(false);
                                     return;
                                 }
@@ -63,6 +70,7 @@ export default function Page() {
                                         return newStep;
                                     });
                                 }, 500);
+                                setIntervalCache(interval);
                             }}
                             className="text-white px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
