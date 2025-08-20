@@ -78,6 +78,18 @@ export default function Page() {
                     </p>
                 </div>
             </div>
+            <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-lg p-2">
+                <p className="text-lg text-white">
+                    Side 1: {sampleDotbook[dotStep].sideToSide.stepOffset}{' '}
+                    {sampleDotbook[dotStep].sideToSide.stepOffsetDirection}{' '}
+                    {sampleDotbook[dotStep].sideToSide.yardline} yd ln
+                </p>
+                <p className="text-lg text-white">
+                    {sampleDotbook[dotStep].frontToBack.stepOffset}{' '}
+                    {sampleDotbook[dotStep].frontToBack.stepOffsetDirection}{' '}
+                    {sampleDotbook[dotStep].frontToBack.line}
+                </p>
+            </div>
         </div>
     );
 }
