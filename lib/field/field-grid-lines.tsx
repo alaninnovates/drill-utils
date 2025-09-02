@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line, Text, useTransformContext } from 'mafs';
+import { Line, Point, Text, useTransformContext, vec } from 'mafs';
 import {
     FIELD_LENGTH,
     END_ZONE,
@@ -113,8 +113,6 @@ export const FieldGridLines = () => {
                 .map((x) => {
                     const n = yardNumberAtX(x);
                     if (n === 0 || n > 50) return null;
-                    const topY = BACK_HASH_Y + 28.5;
-                    const bottomY = FRONT_HASH_Y - 28.5;
 
                     const label = n === 50 ? 50 : n;
                     const mirrored = n === 50 ? 50 : n;
@@ -123,8 +121,8 @@ export const FieldGridLines = () => {
                         <React.Fragment key={`num-${x}`}>
                             <Text
                                 x={x}
-                                y={bottomY}
-                                size={18}
+                                y={11.4 * (5 / 8)}
+                                size={18 * viewTransform['0'] * 0.148}
                                 color="white"
                                 attach="n"
                             >
@@ -132,10 +130,11 @@ export const FieldGridLines = () => {
                             </Text>
                             <Text
                                 x={x}
-                                y={topY}
-                                size={18}
+                                y={-(FIELD_WIDTH - 11.4 * (5 / 8))}
+                                size={18 * viewTransform['0'] * 0.148}
                                 color="white"
-                                attach="s"
+                                attach="n"
+                                svgTextProps={{ transform: 'scale(+1,-1)' }}
                             >
                                 {mirrored}
                             </Text>
