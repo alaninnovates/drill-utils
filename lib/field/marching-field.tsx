@@ -1,6 +1,6 @@
 'use client';
-import React from 'react';
-import { Circle, Line, Mafs, Text } from 'mafs';
+import React, { useEffect, useState } from 'react';
+import { Circle, Line, Mafs } from 'mafs';
 import 'mafs/core.css';
 
 import { FIELD_LENGTH, FIELD_WIDTH } from './field-constants';
@@ -12,18 +12,23 @@ export const MarchingField = ({
 }: {
     dots: { x: number; y: number }[];
 }) => {
+    const [clientHeight, setClientHeight] = useState(0);
+    useEffect(() => {
+        setClientHeight(document.documentElement.clientHeight);
+    }, []);
+
     return (
         <Mafs
             viewBox={{ x: [0, FIELD_LENGTH], y: [0, FIELD_WIDTH] }}
             zoom={{ min: 0.9, max: 10 }}
             pan
             preserveAspectRatio="contain"
-            height={document.documentElement.clientHeight}
+            height={clientHeight}
         >
             <FieldContainer />
             <FieldGridLines />
             {dots.map((coord, index) => (
-                <>
+                <React.Fragment key={index}>
                     <Circle
                         key={index}
                         center={[coord.x, coord.y]}
@@ -31,15 +36,6 @@ export const MarchingField = ({
                         color={index === dots.length - 1 ? 'red' : 'blue'}
                         fillOpacity={1}
                     />
-                    {/* <Text
-                        key={`text-${index}`}
-                        x={coord.x}
-                        y={coord.y}
-                        size={15}
-                        color="black"
-                    >
-                        {index + 1}
-                    </Text> */}
                     {index !== 0 && (
                         <Line.Segment
                             point1={[dots[index - 1].x, dots[index - 1].y]}
@@ -47,7 +43,7 @@ export const MarchingField = ({
                             color="blue"
                         />
                     )}
-                </>
+                </React.Fragment>
             ))}
         </Mafs>
     );
