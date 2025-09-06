@@ -4,7 +4,7 @@ import { Slider } from '@/components/ui/slider';
 import { dotToFieldCoordinate } from '@/lib/dot/parser';
 import { MarchingField } from '@/lib/field/marching-field';
 import { useDrillStore } from '@/lib/state/drill-store-provider';
-import { Pause, Play } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react';
 import { useState } from 'react';
 
 const MAX_DOTS_DISPLAYED = 3;
@@ -102,14 +102,49 @@ export default function Page() {
                             )}
                         </Button>
                     </div>
-                    <p className="text-center text-sm text-white">
-                        Page: {dotStep + 1} / {dotsLength}
-                    </p>
                 </div>
+            </div>
+            <div className="absolute bottom-4 right-4 flex gap-2">
+                <Button
+                    onClick={() => {
+                        setDotStep((prev) => {
+                            const newStep = Math.max(0, prev - 1);
+                            const newDots = pages
+                                .slice(0, newStep + 1)
+                                .map(dotToFieldCoordinate);
+                            setDisplayDots(newDots);
+                            return newStep;
+                        });
+                    }}
+                    disabled={dotStep === 0}
+                >
+                    <ArrowLeft />
+                </Button>
+                <Button
+                    onClick={() => {
+                        setDotStep((prev) => {
+                            const newStep = Math.min(dotsLength - 1, prev + 1);
+                            const newDots = pages
+                                .slice(0, newStep + 1)
+                                .map(dotToFieldCoordinate);
+                            setDisplayDots(newDots);
+                            return newStep;
+                        });
+                    }}
+                    disabled={dotStep === dotsLength - 1}
+                >
+                    <ArrowRight />
+                </Button>
+            </div>
+            <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-sm rounded-lg p-2">
+                <p className="text-lg text-white">
+                    Set {pages[dotStep].set} ({dotStep + 1} / {dotsLength})
+                </p>
             </div>
             <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-lg p-2">
                 <p className="text-lg text-white">
-                    Side 1: {pages[dotStep].sideToSide.stepOffset}{' '}
+                    Side {pages[dotStep].side}:{' '}
+                    {pages[dotStep].sideToSide.stepOffset}{' '}
                     {pages[dotStep].sideToSide.stepOffsetDirection}{' '}
                     {pages[dotStep].sideToSide.yardline} yd ln
                 </p>
@@ -117,6 +152,9 @@ export default function Page() {
                     {pages[dotStep].frontToBack.stepOffset}{' '}
                     {pages[dotStep].frontToBack.stepOffsetDirection}{' '}
                     {pages[dotStep].frontToBack.line}
+                </p>
+                <p className="text-lg text-white">
+                    Counts: {pages[dotStep].counts}
                 </p>
             </div>
         </div>
