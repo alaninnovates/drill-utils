@@ -10,7 +10,7 @@ import {
 
 export const FieldGridLines = () => {
     const { viewTransform } = useTransformContext();
-    const showOneYardGrid = viewTransform['0'] > 28;
+    const showOneYardGrid = viewTransform['0'] > 14;
 
     const yardNumberAtX = (x: number) => {
         const fromLeftGoal = Math.max(0, x - END_ZONE);
