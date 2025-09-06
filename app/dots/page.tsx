@@ -26,6 +26,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { useDrillStore } from '@/lib/state/drill-store-provider';
 import { Button } from '@/components/ui/button';
+import { SelectInstrumentDialog } from './select-instrument.dialog';
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Page() {
     const { pages, addPage, modifyPage, clearPages } = useDrillStore(
@@ -67,9 +70,17 @@ export default function Page() {
 
     return (
         <div className="container mx-auto py-10">
+            <div className="mb-4">
+                <Link href="/viewer">
+                    <Button variant="link">
+                        <ArrowLeft />
+                        Back to Drill Viewer
+                    </Button>
+                </Link>
+            </div>
             <Card>
                 <CardHeader>
-                    <CardTitle>Field Coordinates</CardTitle>
+                    <CardTitle>Your Dots</CardTitle>
                     <CardDescription>View and edit pages</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -277,14 +288,13 @@ export default function Page() {
                         >
                             Add Page
                         </Button>
-                        <Button
-                            className="ml-2"
-                            onClick={() => {
-                                sampleDotbook.forEach((dot) => addPage(dot));
-                            }}
-                        >
-                            Use Sample
-                        </Button>
+                        <SelectInstrumentDialog
+                            trigger={
+                                <Button className="ml-2">
+                                    Select Instrument
+                                </Button>
+                            }
+                        />
                         <Button
                             className="ml-2"
                             variant="destructive"

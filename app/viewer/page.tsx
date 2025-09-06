@@ -5,6 +5,7 @@ import { dotToFieldCoordinate } from '@/lib/dot/parser';
 import { MarchingField } from '@/lib/field/marching-field';
 import { useDrillStore } from '@/lib/state/drill-store-provider';
 import { ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react';
+import Link from 'next/link';
 import { useState } from 'react';
 
 const MAX_DOTS_DISPLAYED = 3;
@@ -30,13 +31,9 @@ export default function Page() {
                 <p className="text-center">
                     Please go to the import page to add dots.
                 </p>
-                <Button
-                    onClick={() => {
-                        window.location.href = '/import';
-                    }}
-                >
-                    Go to import page
-                </Button>
+                <Link href="/dots">
+                    <Button>Go to import page</Button>
+                </Link>
             </div>
         );
     }
