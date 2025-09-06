@@ -15,7 +15,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { DotbookEntry, FrontBack, sampleDotbook } from '@/lib/dot/sample';
+import { DotbookEntry, FrontBack } from '@/lib/dot/types';
 import {
     Select,
     SelectContent,
@@ -29,6 +29,7 @@ import { Button } from '@/components/ui/button';
 import { SelectInstrumentDialog } from './select-instrument.dialog';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { dotData2025 } from '@/lib/dot/data';
 
 export default function Page() {
     const { pages, addPage, modifyPage, clearPages } = useDrillStore(
@@ -88,6 +89,7 @@ export default function Page() {
                         <TableHeader>
                             <TableRow>
                                 <TableHead className="w-24">Set</TableHead>
+                                <TableHead className="w-24">Counts</TableHead>
                                 <TableHead className="w-24">Side</TableHead>
                                 <TableHead>Side to Side</TableHead>
                                 <TableHead>Front to Back</TableHead>
@@ -102,6 +104,20 @@ export default function Page() {
                                             onChange={(e) =>
                                                 updateDot(index, {
                                                     set: e.target.value,
+                                                })
+                                            }
+                                            className="w-24"
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <Input
+                                            type="number"
+                                            value={dot.counts}
+                                            onChange={(e) =>
+                                                updateDot(index, {
+                                                    counts: Number(
+                                                        e.target.value,
+                                                    ),
                                                 })
                                             }
                                             className="w-24"
@@ -294,6 +310,12 @@ export default function Page() {
                                     Select Instrument
                                 </Button>
                             }
+                            onSelect={(instrument) => {
+                                clearPages();
+                                dotData2025[instrument].forEach((dot) =>
+                                    addPage(dot),
+                                );
+                            }}
                         />
                         <Button
                             className="ml-2"

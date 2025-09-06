@@ -1,5 +1,5 @@
 import { createStore } from 'zustand/vanilla';
-import { DotbookEntry } from '@/lib/dot/sample';
+import { DotbookEntry } from '@/lib/dot/types';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 export type DrillState = {
