@@ -6,6 +6,7 @@ import 'mafs/core.css';
 import { FIELD_LENGTH, FIELD_WIDTH } from './field-constants';
 import { FieldContainer } from './field-container';
 import { FieldGridLines } from './field-grid-lines';
+import { calculateMidset } from '../dot/parser';
 
 export const MarchingField = ({
     dots,
@@ -37,11 +38,19 @@ export const MarchingField = ({
                         fillOpacity={1}
                     />
                     {index !== 0 && (
-                        <Line.Segment
-                            point1={[dots[index - 1].x, dots[index - 1].y]}
-                            point2={[coord.x, coord.y]}
-                            color="blue"
-                        />
+                        <>
+                            <Line.Segment
+                                point1={[dots[index - 1].x, dots[index - 1].y]}
+                                point2={[coord.x, coord.y]}
+                                color="blue"
+                            />
+                            <Circle
+                                center={calculateMidset(dots[index - 1], coord)}
+                                radius={0.1}
+                                color="white"
+                                fillOpacity={1}
+                            />
+                        </>
                     )}
                 </React.Fragment>
             ))}

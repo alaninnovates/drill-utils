@@ -5,7 +5,7 @@ import {
     FRONT_HASH_Y,
     BACK_HASH_Y,
 } from '../field/field-constants';
-import { DotbookEntry } from './sample';
+import { DotbookEntry } from './types';
 
 const STEP_SIZE = 5 / 8;
 
@@ -72,4 +72,11 @@ export const dotToFieldCoordinate = (
             break;
     }
     return { x, y };
+};
+
+export const calculateMidset = (
+    coord1: { x: number; y: number },
+    coord2: { x: number; y: number },
+): [number, number] => {
+    return [(coord1.x + coord2.x) / 2, (coord1.y + coord2.y) / 2];
 };
