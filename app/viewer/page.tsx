@@ -6,7 +6,7 @@ import { MarchingField } from '@/lib/field/marching-field';
 import { useDrillStore } from '@/lib/state/drill-store-provider';
 import { ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 const MAX_DOTS_DISPLAYED = 3;
 
@@ -21,6 +21,26 @@ export default function Page() {
     const [intervalCache, setIntervalCache] = useState<NodeJS.Timeout | null>(
         null,
     );
+
+    const isHold = useMemo(() => {
+        if (dotsLength === 0) return false;
+        if (dotStep === 0) return false;
+        const currentDot = pages[dotStep];
+        const previousDot = pages[dotStep - 1];
+        return (
+            currentDot.sideToSide.stepOffset ===
+                previousDot.sideToSide.stepOffset &&
+            currentDot.sideToSide.stepOffsetDirection ===
+                previousDot.sideToSide.stepOffsetDirection &&
+            currentDot.sideToSide.yardline ===
+                previousDot.sideToSide.yardline &&
+            currentDot.frontToBack.stepOffset ===
+                previousDot.frontToBack.stepOffset &&
+            currentDot.frontToBack.stepOffsetDirection ===
+                previousDot.frontToBack.stepOffsetDirection &&
+            currentDot.frontToBack.line === previousDot.frontToBack.line
+        );
+    }, [dotStep, pages, dotsLength]);
 
     if (dotsLength === 0) {
         return (
@@ -151,7 +171,7 @@ export default function Page() {
                     {pages[dotStep].frontToBack.line}
                 </p>
                 <p className="text-lg text-white">
-                    Counts: {pages[dotStep].counts}
+                    {isHold ? 'Hold' : 'Move'}: {pages[dotStep].counts}
                 </p>
             </div>
         </div>
