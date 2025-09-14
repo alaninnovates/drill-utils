@@ -18,4 +18,5 @@ export type DotbookEntry = {
         stepOffset: number;
         stepOffsetDirection: 'In Front Of' | 'Behind';
     };
+    note?: string;
 };

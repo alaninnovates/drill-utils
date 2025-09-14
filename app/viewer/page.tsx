@@ -4,9 +4,10 @@ import { Slider } from '@/components/ui/slider';
 import { dotToFieldCoordinate } from '@/lib/dot/parser';
 import { MarchingField } from '@/lib/field/marching-field';
 import { useDrillStore } from '@/lib/state/drill-store-provider';
-import { ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react';
+import { ArrowLeft, ArrowRight, NotebookPen, Pause, Play } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
+import { NotesDialog } from './notes.dialog';
 
 const MAX_DOTS_DISPLAYED = 3;
 
@@ -153,10 +154,17 @@ export default function Page() {
                     <ArrowRight />
                 </Button>
             </div>
-            <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-sm rounded-lg p-2">
-                <p className="text-lg text-white">
-                    Set {pages[dotStep].set} ({dotStep + 1} / {dotsLength})
-                </p>
+            <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-sm rounded-lg p-2 flex items-center gap-4">
+                <p className="text-lg text-white">Set {pages[dotStep].set}</p>
+                <NotesDialog
+                    trigger={
+                        <Button>
+                            <NotebookPen className="h-4 w-4 mr-2" />
+                            Notes
+                        </Button>
+                    }
+                    setName={pages[dotStep].set}
+                />
             </div>
             <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-lg p-2">
                 <p className="text-lg text-white">

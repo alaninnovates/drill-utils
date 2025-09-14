@@ -9,6 +9,7 @@ export type DrillState = {
 export type DrillActions = {
     addPage: (data: DotbookEntry) => void;
     modifyPage: (page: number, data: Partial<DotbookEntry>) => void;
+    modifyNote: (setName: string, note: string) => void;
     clearPages: () => void;
 };
 
@@ -35,6 +36,12 @@ export const createDrillStore = (initState: DrillState = defaultInitState) => {
                     set((state) => ({
                         pages: state.pages.map((p, index) =>
                             index === page ? { ...p, ...data } : p,
+                        ),
+                    })),
+                modifyNote: (setName: string, note: string) =>
+                    set((state) => ({
+                        pages: state.pages.map((p) =>
+                            p.set === setName ? { ...p, note: note } : p,
                         ),
                     })),
                 clearPages: () => set({ pages: [] }),
