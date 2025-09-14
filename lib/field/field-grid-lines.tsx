@@ -129,12 +129,12 @@ export const FieldGridLines = () => {
                                 {label}
                             </Text>
                             <Text
-                                x={x}
+                                x={-x}
                                 y={-(FIELD_WIDTH - 11.4 * (5 / 8))}
                                 size={18 * viewTransform['0'] * 0.148}
                                 color="white"
                                 attach="n"
-                                svgTextProps={{ transform: 'scale(+1,-1)' }}
+                                svgTextProps={{ transform: 'scale(-1,-1)' }}
                             >
                                 {mirrored}
                             </Text>
