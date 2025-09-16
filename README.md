@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Drill Utils
 
-## Getting Started
+<img src="github/assets/drill-utils-icon.png" alt="Icon" width="150px">
 
-First, run the development server:
+> [!NOTE]  
+> Drill Utils has been released! Access it at this link: https://drill25.alaninnovates.com
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Drill Utils is a visualizer for marching band drill, which is essentially just a series of formations that a marching band performs on a field. You can add your own drill or select from some pre-made ones (I made these for my fellow clarinet section members!).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Drill Viewing**: View your drill with position, midsets, and counts (holding/moving). Zoom and pan as well!
+- **Notes**: Add notes to specific counts for reference (like if your director gives you particular choreo)
+- **Detailed Field Grid**: I spent a good chunk of time making sure that the field matches up 1-1 with a real-life high school football field. Who knows, maybe I'll add more field dimensions in the future.
+- **Optimized for Mobile**: My fellow section members and I have been using this *a lot* on their phones, and on the field. It makes it a breeze to learn new drill, and you'll always be faster than the rest of the people to find your next dot.
 
-## Learn More
+Some screenshots!
+<table>
+    <tr>
+        <td>
+            <img src="github/assets/drill_view.png" alt="Home Page" width="300">
+            <p>Drill View - midsets in white, current dot in red</p>
+        </td>
+        <td>
+            <img src="github/assets/notes_view.png" alt="Create Page" width="300">
+            <p>Notes view, free to edit and automatically saves</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <img src="github/assets/dots_manager.png" alt="Free Response Prompt" width="300">
+            <p>View all/manage dots</p>
+        </td>
+        <td>
+            <img src="github/assets/instrument_select.png" alt="Multiple Choice Question" width="300">
+            <p>Select Instrument</p>
+        </td>
+    </tr>
+</table>
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To get started, go to https://drill25.alaninnovates.com and choose some drill to view! Personally, I'd go with C2... maybe because that's my actual drill number this year 👀
