@@ -6,6 +6,7 @@ import {
     DialogDescription,
     DialogTitle,
     DialogTrigger,
+    DialogClose,
 } from '@/components/ui/dialog';
 
 export const SelectInstrumentDialog = ({
@@ -26,11 +27,13 @@ export const SelectInstrumentDialog = ({
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid grid-cols-2 gap-4 mt-4">
-                    <Button onClick={() => onSelect('C1')}>C1</Button>
-                    <Button onClick={() => onSelect('C2')}>C2</Button>
-                    <Button onClick={() => onSelect('C3')}>C3</Button>
-                    <Button onClick={() => onSelect('W1')}>W1</Button>
-                    <Button onClick={() => onSelect('W2')}>W2</Button>
+                    {['C1', 'C2', 'C3', 'W1', 'W2'].map((inst) => (
+                        <DialogClose asChild key={inst}>
+                            <Button onClick={() => onSelect(inst)}>
+                                {inst}
+                            </Button>
+                        </DialogClose>
+                    ))}
                 </div>
             </DialogContent>
         </Dialog>

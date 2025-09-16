@@ -33,11 +33,11 @@ export const createDrillStore = (initState: DrillState = defaultInitState) => {
                 addPage: (data: DotbookEntry) =>
                     set((state) => ({ pages: [...state.pages, data] })),
                 modifyPage: (page: number, data: Partial<DotbookEntry>) =>
-                    set((state) => ({
-                        pages: state.pages.map((p, index) =>
-                            index === page ? { ...p, ...data } : p,
-                        ),
-                    })),
+                    set((state) => {
+                        const newPages = [...state.pages];
+                        newPages[page] = { ...newPages[page], ...data };
+                        return { pages: newPages };
+                    }),
                 modifyNote: (setName: string, note: string) =>
                     set((state) => ({
                         pages: state.pages.map((p) =>
