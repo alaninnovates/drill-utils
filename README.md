@@ -19,21 +19,21 @@ Some screenshots!
 <table>
     <tr>
         <td>
-            <img src="github/assets/drill_view.png" alt="Home Page" width="300">
+            <img src="github/assets/drill_view.png" alt="Home Page" width="400">
             <p>Drill View - midsets in white, current dot in red</p>
         </td>
         <td>
-            <img src="github/assets/notes_view.png" alt="Create Page" width="300">
+            <img src="github/assets/notes_view.png" alt="Create Page" width="400">
             <p>Notes view, free to edit and automatically saves</p>
         </td>
     </tr>
     <tr>
         <td>
-            <img src="github/assets/dots_manager.png" alt="Free Response Prompt" width="300">
+            <img src="github/assets/dots_manager.png" alt="Free Response Prompt" width="400">
             <p>View all/manage dots</p>
         </td>
         <td>
-            <img src="github/assets/instrument_select.png" alt="Multiple Choice Question" width="300">
+            <img src="github/assets/instrument_select.png" alt="Multiple Choice Question" width="400">
             <p>Select Instrument</p>
         </td>
     </tr>
