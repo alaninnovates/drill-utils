@@ -4,10 +4,18 @@ import { Slider } from '@/components/ui/slider';
 import { dotToFieldCoordinate } from '@/lib/dot/parser';
 import { MarchingField } from '@/lib/field/marching-field';
 import { useDrillStore } from '@/lib/state/drill-store-provider';
-import { ArrowLeft, ArrowRight, NotebookPen, Pause, Play } from 'lucide-react';
+import {
+    ArrowLeft,
+    ArrowRight,
+    NotebookPen,
+    Pause,
+    Play,
+    RectangleEllipsis,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { NotesDialog } from './notes.dialog';
+import { AllSetsDialog } from './all-sets.dialog';
 
 const MAX_DOTS_DISPLAYED = 3;
 
@@ -154,16 +162,34 @@ export default function Page() {
                     <ArrowRight />
                 </Button>
             </div>
-            <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-sm rounded-lg p-2 flex items-center gap-4">
-                <p className="text-lg text-white">Set {pages[dotStep].set}</p>
+            <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-sm rounded-lg p-2 flex items-center gap-2">
+                <p className="text-lg text-white mr-2">
+                    Set {pages[dotStep].set}
+                </p>
                 <NotesDialog
                     trigger={
                         <Button>
-                            <NotebookPen className="h-4 w-4 mr-2" />
+                            <NotebookPen className="h-4 w-4" />
                             Notes
                         </Button>
                     }
                     setName={pages[dotStep].set}
+                />
+                <AllSetsDialog
+                    trigger={
+                        <Button>
+                            <RectangleEllipsis className="h-4 w-4" />
+                            All Sets
+                        </Button>
+                    }
+                    currentIndex={dotStep}
+                    onSetSelect={(index) => {
+                        setDotStep(index);
+                        const newDots = pages
+                            .slice(0, index + 1)
+                            .map(dotToFieldCoordinate);
+                        setDisplayDots(newDots);
+                    }}
                 />
             </div>
             <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-lg p-2">
