@@ -74,7 +74,9 @@ export default function Page() {
                     }
                     onSelect={(instrument) => {
                         clearPages();
-                        dotData2025[instrument].forEach((dot) => addPage(dot));
+                        dotData2025[instrument].dots.forEach((dot) =>
+                            addPage(dot),
+                        );
                     }}
                 />
                 <Button

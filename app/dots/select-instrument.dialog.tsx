@@ -27,14 +27,16 @@ export const SelectInstrumentDialog = ({
                         Select the instrument you want to use for this drill.
                     </DialogDescription>
                 </DialogHeader>
-                <div className="grid grid-cols-2 gap-4 mt-4">
-                    {Object.keys(dotData2025).map((inst) => (
-                        <DialogClose asChild key={inst}>
-                            <Button onClick={() => onSelect(inst)}>
-                                {inst}
-                            </Button>
-                        </DialogClose>
-                    ))}
+                <div className="grid grid-cols-2 gap-4 mt-4 max-h-64 overflow-y-auto">
+                    {Object.values(dotData2025)
+                        .sort((a, b) => a.label.localeCompare(b.label))
+                        .map(({ id, performer, label }) => (
+                            <DialogClose asChild key={id}>
+                                <Button onClick={() => onSelect(label)}>
+                                    {performer} {label}
+                                </Button>
+                            </DialogClose>
+                        ))}
                 </div>
             </DialogContent>
         </Dialog>
