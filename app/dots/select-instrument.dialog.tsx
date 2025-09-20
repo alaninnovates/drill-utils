@@ -8,6 +8,7 @@ import {
     DialogTrigger,
     DialogClose,
 } from '@/components/ui/dialog';
+import { dotData2025 } from '@/lib/dot/data';
 
 export const SelectInstrumentDialog = ({
     trigger,
@@ -27,7 +28,7 @@ export const SelectInstrumentDialog = ({
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid grid-cols-2 gap-4 mt-4">
-                    {['C1', 'C2', 'C3', 'W1', 'W2'].map((inst) => (
+                    {Object.keys(dotData2025).map((inst) => (
                         <DialogClose asChild key={inst}>
                             <Button onClick={() => onSelect(inst)}>
                                 {inst}
