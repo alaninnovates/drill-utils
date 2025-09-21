@@ -7,6 +7,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { sections } from '@/lib/dot/sections';
 import { useDrillStore } from '@/lib/state/drill-store-provider';
 import { cn } from '@/lib/utils';
@@ -100,27 +101,72 @@ const ModifyView = ({
                     className="inline w-auto"
                 />
             </h3>
-            <div className="flex flex-col gap-2 max-h-96 overflow-y-auto">
-                {sections.map((instrument) => {
-                    const isHidden = view.hiddenSections.includes(instrument);
-                    return (
-                        <div
-                            key={instrument}
-                            className="flex items-center justify-between p-2 border rounded hover:bg-gray-50 cursor-pointer"
-                            onClick={() => toggleInstrument(instrument)}
-                        >
-                            <span>{instrument}</span>
-                            <span>
-                                {isHidden ? (
-                                    <EyeClosed className="w-4 h-4" />
-                                ) : (
-                                    <Eye className="w-4 h-4" />
-                                )}
-                            </span>
+            <Tabs defaultValue="sections">
+                <TabsList>
+                    <TabsTrigger value="sections">
+                        Show/hide sections
+                    </TabsTrigger>
+                    <TabsTrigger value="set_display">Set Display</TabsTrigger>
+                </TabsList>
+                <TabsContent value="sections">
+                    <div className="flex flex-col gap-2 max-h-96 overflow-y-auto sm:max-h-44 md:max-h-56">
+                        {sections.map((instrument) => {
+                            const isHidden =
+                                view.hiddenSections.includes(instrument);
+                            return (
+                                <div
+                                    key={instrument}
+                                    className="flex items-center justify-between p-2 border rounded hover:bg-gray-50 cursor-pointer"
+                                    onClick={() => toggleInstrument(instrument)}
+                                >
+                                    <span>{instrument}</span>
+                                    <span>
+                                        {isHidden ? (
+                                            <EyeClosed className="w-4 h-4" />
+                                        ) : (
+                                            <Eye className="w-4 h-4" />
+                                        )}
+                                    </span>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </TabsContent>
+                <TabsContent value="set_display">
+                    <div className="flex flex-col gap-4 mt-4">
+                        <div className="flex flex-col gap-2">
+                            <label className="font-medium">
+                                Minus Quantity
+                            </label>
+                            <Input
+                                type="number"
+                                value={view.minusQuantity}
+                                onChange={(e) =>
+                                    modifyView(currentModifyingView, {
+                                        ...view,
+                                        minusQuantity: Number(e.target.value),
+                                    })
+                                }
+                                className="w-32"
+                            />
                         </div>
-                    );
-                })}
-            </div>
+                        <div className="flex flex-col gap-2">
+                            <label className="font-medium">Plus Quantity</label>
+                            <Input
+                                type="number"
+                                value={view.plusQuantity}
+                                onChange={(e) =>
+                                    modifyView(currentModifyingView, {
+                                        ...view,
+                                        plusQuantity: Number(e.target.value),
+                                    })
+                                }
+                                className="w-32"
+                            />
+                        </div>
+                    </div>
+                </TabsContent>
+            </Tabs>
         </div>
     );
 };
