@@ -3,9 +3,12 @@ import { dotData2025 } from '../dot/data';
 import { instrumentToColor } from '../dot/color';
 import { dotToFieldCoordinate } from '../dot/parser';
 import React from 'react';
+import { useDrillStore } from '../state/drill-store-provider';
 
 export const OtherPerformers = ({ currentIndex }: { currentIndex: number }) => {
     const { viewTransform } = useTransformContext();
+    const { views, currentView } = useDrillStore((state) => state);
+    const activeView = currentView ? views[currentView] : null;
     return (
         <>
             {Object.values(dotData2025).map(
@@ -14,6 +17,13 @@ export const OtherPerformers = ({ currentIndex }: { currentIndex: number }) => {
                         console.log(
                             `No dot for performer ${performer} ${label} at index ${currentIndex}`,
                         );
+                        return null;
+                    }
+                    if (
+                        activeView &&
+                        activeView.hiddenSections.includes(performer)
+                    ) {
+                        return null;
                     }
                     const coord = dotToFieldCoordinate(dots[currentIndex]);
                     return (
