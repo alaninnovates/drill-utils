@@ -7,6 +7,7 @@ import { useDrillStore } from '@/lib/state/drill-store-provider';
 import {
     ArrowLeft,
     ArrowRight,
+    Eye,
     NotebookPen,
     Pause,
     Play,
@@ -16,6 +17,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { NotesDialog } from './notes.dialog';
 import { AllSetsDialog } from './all-sets.dialog';
+import { ViewsDialog } from './views.dialog';
 
 const MAX_DOTS_DISPLAYED = 3;
 
@@ -199,6 +201,14 @@ export default function Page() {
                             .map(dotToFieldCoordinate);
                         setDisplayDots(newDots);
                     }}
+                />
+                <ViewsDialog
+                    trigger={
+                        <Button>
+                            <Eye className="h-4 w-4" />
+                            Views
+                        </Button>
+                    }
                 />
             </div>
             <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-lg p-2">
