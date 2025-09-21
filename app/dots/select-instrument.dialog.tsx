@@ -8,6 +8,7 @@ import {
     DialogTrigger,
     DialogClose,
 } from '@/components/ui/dialog';
+import { instrumentToColor } from '@/lib/dot/color';
 import { dotData2025 } from '@/lib/dot/data';
 
 export const SelectInstrumentDialog = ({
@@ -32,7 +33,13 @@ export const SelectInstrumentDialog = ({
                         .sort((a, b) => a.label.localeCompare(b.label))
                         .map(({ id, performer, label }) => (
                             <DialogClose asChild key={id}>
-                                <Button onClick={() => onSelect(label)}>
+                                <Button
+                                    onClick={() => onSelect(label)}
+                                    style={{
+                                        backgroundColor:
+                                            instrumentToColor(performer),
+                                    }}
+                                >
                                     {performer} {label}
                                 </Button>
                             </DialogClose>

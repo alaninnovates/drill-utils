@@ -4,6 +4,8 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 export type DrillState = {
     pages: DotbookEntry[];
+    label: string;
+    instrument: string;
 };
 
 export type DrillActions = {
@@ -11,6 +13,8 @@ export type DrillActions = {
     modifyPage: (page: number, data: Partial<DotbookEntry>) => void;
     modifyNote: (setName: string, note: string) => void;
     clearPages: () => void;
+    setLabel: (label: string) => void;
+    setInstrument: (instrument: string) => void;
 };
 
 export type DrillStore = DrillState & DrillActions;
@@ -18,11 +22,15 @@ export type DrillStore = DrillState & DrillActions;
 export const initDrillStore = (): DrillState => {
     return {
         pages: [],
+        label: '',
+        instrument: '',
     };
 };
 
 export const defaultInitState: DrillState = {
     pages: [],
+    label: '',
+    instrument: '',
 };
 
 export const createDrillStore = (initState: DrillState = defaultInitState) => {
@@ -45,6 +53,8 @@ export const createDrillStore = (initState: DrillState = defaultInitState) => {
                         ),
                     })),
                 clearPages: () => set({ pages: [] }),
+                setLabel: (label: string) => set({ label }),
+                setInstrument: (instrument: string) => set({ instrument }),
             }),
             {
                 name: 'drill-storage',

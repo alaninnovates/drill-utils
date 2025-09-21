@@ -14,11 +14,18 @@ import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { dotData2025 } from '@/lib/dot/data';
 import { DotRow } from './dot-row';
+import { useShallow } from 'zustand/shallow';
 
 export default function Page() {
     const pageLength = useDrillStore((store) => store.pages.length);
     const addPage = useDrillStore((store) => store.addPage);
     const clearPages = useDrillStore((store) => store.clearPages);
+    const { setLabel, setInstrument } = useDrillStore(
+        useShallow((store) => ({
+            setLabel: store.setLabel,
+            setInstrument: store.setInstrument,
+        })),
+    );
 
     return (
         <div className="container mx-auto py-10">
@@ -77,6 +84,8 @@ export default function Page() {
                         dotData2025[instrument].dots.forEach((dot) =>
                             addPage(dot),
                         );
+                        setLabel(dotData2025[instrument].label);
+                        setInstrument(dotData2025[instrument].performer);
                     }}
                 />
                 <Button

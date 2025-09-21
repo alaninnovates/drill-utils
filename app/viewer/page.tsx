@@ -13,23 +13,31 @@ import {
     RectangleEllipsis,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { NotesDialog } from './notes.dialog';
 import { AllSetsDialog } from './all-sets.dialog';
 
 const MAX_DOTS_DISPLAYED = 3;
 
 export default function Page() {
-    const { pages } = useDrillStore((store) => store);
+    const pages = useDrillStore((store) => store.pages);
     const dotsLength = pages.length;
     const [dotStep, setDotStep] = useState(0);
-    const [displayDots, setDisplayDots] = useState([
-        pages.length > 0 ? dotToFieldCoordinate(pages[0]) : { x: 0, y: 0 },
-    ]);
+    const [displayDots, setDisplayDots] = useState<{ x: number; y: number }[]>(
+        [],
+    );
     const [isPlaying, setIsPlaying] = useState(false);
     const [intervalCache, setIntervalCache] = useState<NodeJS.Timeout | null>(
         null,
     );
+
+    useEffect(() => {
+        if (pages.length === 0) return;
+        const initialDots = pages
+            .slice(0, dotStep + 1)
+            .map(dotToFieldCoordinate);
+        setDisplayDots(initialDots);
+    }, [pages]);
 
     const isHold = useMemo(() => {
         if (dotsLength === 0) return false;
@@ -73,6 +81,7 @@ export default function Page() {
                 dots={displayDots.slice(
                     displayDots.length - MAX_DOTS_DISPLAYED,
                 )}
+                currentIndex={dotStep}
             />
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/20 backdrop-blur-sm rounded-lg p-4 z-10">
                 <div className="flex flex-col items-center gap-4">

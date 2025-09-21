@@ -1,18 +1,30 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Circle, Line, Mafs } from 'mafs';
+import { Mafs } from 'mafs';
 import 'mafs/core.css';
 
 import { FIELD_LENGTH, FIELD_WIDTH } from './field-constants';
 import { FieldContainer } from './field-container';
 import { FieldGridLines } from './field-grid-lines';
-import { calculateMidset } from '../dot/parser';
+import { OtherPerformers } from './other-performers';
+import { useDrillStore } from '../state/drill-store-provider';
+import { useShallow } from 'zustand/shallow';
+import { ActivePerformer } from './active-performer';
 
 export const MarchingField = ({
     dots,
+    currentIndex,
 }: {
     dots: { x: number; y: number }[];
+    currentIndex: number;
 }) => {
+    const { instrument, label } = useDrillStore(
+        useShallow((store) => ({
+            instrument: store.instrument,
+            label: store.label,
+        })),
+    );
+
     const [clientHeight, setClientHeight] = useState(0);
     useEffect(() => {
         setClientHeight(document.documentElement.clientHeight);
@@ -28,38 +40,12 @@ export const MarchingField = ({
         >
             <FieldContainer />
             <FieldGridLines />
-            {dots.map((coord, index) => (
-                <React.Fragment key={index}>
-                    <Circle
-                        key={index}
-                        center={[coord.x, coord.y]}
-                        radius={0.2}
-                        color={index === dots.length - 1 ? 'red' : 'blue'}
-                        fillOpacity={1}
-                    />
-                    {index !== 0 && (
-                        <>
-                            <Line.Segment
-                                point1={[dots[index - 1].x, dots[index - 1].y]}
-                                point2={[coord.x, coord.y]}
-                                color="blue"
-                            />
-                            {(coord.x !== dots[index - 1].x ||
-                                coord.y !== dots[index - 1].y) && (
-                                <Circle
-                                    center={calculateMidset(
-                                        dots[index - 1],
-                                        coord,
-                                    )}
-                                    radius={0.1}
-                                    color="white"
-                                    fillOpacity={1}
-                                />
-                            )}
-                        </>
-                    )}
-                </React.Fragment>
-            ))}
+            <OtherPerformers currentIndex={currentIndex} />
+            <ActivePerformer
+                dots={dots}
+                instrument={instrument}
+                label={label}
+            />
         </Mafs>
     );
 };
