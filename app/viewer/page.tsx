@@ -25,21 +25,10 @@ export default function Page() {
     const pages = useDrillStore((store) => store.pages);
     const dotsLength = pages.length;
     const [dotStep, setDotStep] = useState(0);
-    const [displayDots, setDisplayDots] = useState<{ x: number; y: number }[]>(
-        [],
-    );
     const [isPlaying, setIsPlaying] = useState(false);
     const [intervalCache, setIntervalCache] = useState<NodeJS.Timeout | null>(
         null,
     );
-
-    useEffect(() => {
-        if (pages.length === 0) return;
-        const initialDots = pages
-            .slice(0, dotStep + 1)
-            .map(dotToFieldCoordinate);
-        setDisplayDots(initialDots);
-    }, [pages]);
 
     const isHold = useMemo(() => {
         if (dotsLength === 0) return false;
@@ -79,12 +68,7 @@ export default function Page() {
 
     return (
         <div style={{ height: '100vh' }}>
-            <MarchingField
-                dots={displayDots.slice(
-                    displayDots.length - MAX_DOTS_DISPLAYED,
-                )}
-                currentIndex={dotStep}
-            />
+            <MarchingField currentIndex={dotStep} />
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/20 backdrop-blur-sm rounded-lg p-4 z-10">
                 <div className="flex flex-col items-center gap-4">
                     <div className="flex items-center gap-2">
@@ -95,10 +79,6 @@ export default function Page() {
                             value={[dotStep]}
                             onValueChange={(value) => {
                                 setDotStep(value[0]);
-                                const newDots = pages
-                                    .slice(0, value[0] + 1)
-                                    .map(dotToFieldCoordinate);
-                                setDisplayDots(newDots);
                             }}
                             className="w-[300px]"
                         />
@@ -121,10 +101,6 @@ export default function Page() {
                                             return prev;
                                         }
                                         const newStep = prev + 1;
-                                        const newDots = pages
-                                            .slice(0, newStep + 1)
-                                            .map(dotToFieldCoordinate);
-                                        setDisplayDots(newDots);
                                         return newStep;
                                     });
                                 }, 500);
@@ -145,12 +121,7 @@ export default function Page() {
                 <Button
                     onClick={() => {
                         setDotStep((prev) => {
-                            const newStep = Math.max(0, prev - 1);
-                            const newDots = pages
-                                .slice(0, newStep + 1)
-                                .map(dotToFieldCoordinate);
-                            setDisplayDots(newDots);
-                            return newStep;
+                            return Math.max(0, prev - 1);
                         });
                     }}
                     disabled={dotStep === 0}
@@ -160,12 +131,7 @@ export default function Page() {
                 <Button
                     onClick={() => {
                         setDotStep((prev) => {
-                            const newStep = Math.min(dotsLength - 1, prev + 1);
-                            const newDots = pages
-                                .slice(0, newStep + 1)
-                                .map(dotToFieldCoordinate);
-                            setDisplayDots(newDots);
-                            return newStep;
+                            return Math.min(dotsLength - 1, prev + 1);
                         });
                     }}
                     disabled={dotStep === dotsLength - 1}
@@ -196,10 +162,6 @@ export default function Page() {
                     currentIndex={dotStep}
                     onSetSelect={(index) => {
                         setDotStep(index);
-                        const newDots = pages
-                            .slice(0, index + 1)
-                            .map(dotToFieldCoordinate);
-                        setDisplayDots(newDots);
                     }}
                 />
                 <ViewsDialog

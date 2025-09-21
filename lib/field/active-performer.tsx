@@ -1,75 +1,141 @@
-import { Circle, Line, Polygon, Text, useTransformContext } from 'mafs';
+import { Circle, Line, Polygon, Text, useTransformContext, vec } from 'mafs';
 import React from 'react';
-import { instrumentToColor } from '../dot/color';
-import { calculateMidset } from '../dot/parser';
+import { calculateMidset, dotToFieldCoordinate } from '../dot/parser';
+import { useDrillStore } from '../state/drill-store-provider';
+import { DotbookEntry } from '../dot/types';
+
+const CurrentPageDisplay = ({
+    coord,
+    label,
+    viewTransform,
+}: {
+    coord: { x: number; y: number };
+    label: string;
+    viewTransform: vec.Matrix;
+}) => (
+    <>
+        <Circle
+            center={[coord.x, coord.y]}
+            radius={0.2}
+            color="red"
+            fillOpacity={1}
+        />
+        <Polygon
+            points={[
+                // square around the dot
+                [coord.x - 0.4, coord.y - 0.4],
+                [coord.x + 0.4, coord.y - 0.4],
+                [coord.x + 0.4, coord.y + 0.4],
+                [coord.x - 0.4, coord.y + 0.4],
+            ]}
+            color="red"
+        />
+        <Text
+            x={coord.x}
+            y={coord.y}
+            color="white"
+            size={viewTransform['0'] * 0.148 * 2}
+        >
+            {label}
+        </Text>
+    </>
+);
+
+const AdditionalPagesDisplay = ({
+    pages,
+    currentIndex,
+    additionalDots,
+    direction,
+}: {
+    pages: DotbookEntry[];
+    currentIndex: number;
+    additionalDots: DotbookEntry[];
+    direction: number;
+}) => {
+    return (
+        <>
+            {additionalDots.map((dot, index) => {
+                const currentCoord = dotToFieldCoordinate(dot);
+                const nextCoord = dotToFieldCoordinate(
+                    additionalDots[index + 1] || pages[currentIndex],
+                );
+                const midCoord = calculateMidset(currentCoord, nextCoord);
+
+                return (
+                    <React.Fragment key={index}>
+                        <Circle
+                            center={[currentCoord.x, currentCoord.y]}
+                            radius={0.2}
+                            color="red"
+                            fillOpacity={1}
+                        />
+                        <Line.Segment
+                            point1={[currentCoord.x, currentCoord.y]}
+                            point2={[nextCoord.x, nextCoord.y]}
+                            color={direction === -1 ? 'blue' : 'green'}
+                        />
+                        {(currentCoord.x !== nextCoord.x ||
+                            currentCoord.y !== nextCoord.y) && (
+                            <Circle
+                                center={midCoord}
+                                radius={0.1}
+                                color="white"
+                                fillOpacity={1}
+                            />
+                        )}
+                    </React.Fragment>
+                );
+            })}
+        </>
+    );
+};
 
 export const ActivePerformer = ({
-    dots,
-    instrument,
+    currentIndex,
     label,
 }: {
-    dots: { x: number; y: number }[];
-    instrument: string;
+    currentIndex: number;
     label: string;
 }) => {
     const { viewTransform } = useTransformContext();
 
+    const { pages, views, currentView } = useDrillStore((state) => state);
+    const activeView = currentView ? views[currentView] : null;
+    const minusDots = activeView?.minusQuantity
+        ? pages.slice(
+              Math.max(0, currentIndex - activeView.minusQuantity),
+              currentIndex,
+          )
+        : [];
+    const plusDots = activeView?.plusQuantity
+        ? pages.slice(
+              currentIndex + 1,
+              Math.min(
+                  pages.length,
+                  currentIndex + 1 + activeView.plusQuantity,
+              ),
+          )
+        : [];
+
     return (
         <>
-            {dots.map((coord, index) => (
-                <React.Fragment key={index}>
-                    <Circle
-                        key={index}
-                        center={[coord.x, coord.y]}
-                        radius={0.2}
-                        color={instrumentToColor(instrument)}
-                        fillOpacity={1}
-                    />
-                    {index !== 0 && (
-                        <>
-                            <Line.Segment
-                                point1={[dots[index - 1].x, dots[index - 1].y]}
-                                point2={[coord.x, coord.y]}
-                                color="blue"
-                            />
-                            {(coord.x !== dots[index - 1].x ||
-                                coord.y !== dots[index - 1].y) && (
-                                <Circle
-                                    center={calculateMidset(
-                                        dots[index - 1],
-                                        coord,
-                                    )}
-                                    radius={0.1}
-                                    color="white"
-                                    fillOpacity={1}
-                                />
-                            )}
-                        </>
-                    )}
-                    {index === dots.length - 1 && (
-                        <>
-                            <Polygon
-                                points={[
-                                    // square around the dot
-                                    [coord.x - 0.4, coord.y - 0.4],
-                                    [coord.x + 0.4, coord.y - 0.4],
-                                    [coord.x + 0.4, coord.y + 0.4],
-                                    [coord.x - 0.4, coord.y + 0.4],
-                                ]}
-                                color="red"
-                            />
-                            <Text
-                                x={coord.x}
-                                y={coord.y}
-                                color="white"
-                                size={viewTransform['0'] * 0.148 * 2}
-                            >
-                                {label}
-                            </Text>
-                        </>
-                    )}
-                </React.Fragment>
-            ))}
+            <AdditionalPagesDisplay
+                pages={pages}
+                currentIndex={currentIndex}
+                additionalDots={minusDots}
+                direction={-1}
+            />
+            <AdditionalPagesDisplay
+                pages={pages}
+                currentIndex={currentIndex}
+                additionalDots={plusDots}
+                direction={1}
+            />
+            <CurrentPageDisplay
+                coord={dotToFieldCoordinate(pages[currentIndex])}
+                label={label}
+                viewTransform={viewTransform}
+            />
         </>
     );
 };

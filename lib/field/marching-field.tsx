@@ -8,28 +8,15 @@ import { FieldContainer } from './field-container';
 import { FieldGridLines } from './field-grid-lines';
 import { OtherPerformers } from './other-performers';
 import { useDrillStore } from '../state/drill-store-provider';
-import { useShallow } from 'zustand/shallow';
 import { ActivePerformer } from './active-performer';
 
-export const MarchingField = ({
-    dots,
-    currentIndex,
-}: {
-    dots: { x: number; y: number }[];
-    currentIndex: number;
-}) => {
-    const { instrument, label } = useDrillStore(
-        useShallow((store) => ({
-            instrument: store.instrument,
-            label: store.label,
-        })),
-    );
+export const MarchingField = ({ currentIndex }: { currentIndex: number }) => {
+    const { label } = useDrillStore((store) => store);
 
     const [clientHeight, setClientHeight] = useState(0);
     useEffect(() => {
         setClientHeight(document.documentElement.clientHeight);
     }, []);
-
     return (
         <Mafs
             viewBox={{ x: [0, FIELD_LENGTH], y: [0, FIELD_WIDTH] }}
@@ -41,11 +28,7 @@ export const MarchingField = ({
             <FieldContainer />
             <FieldGridLines />
             <OtherPerformers currentIndex={currentIndex} />
-            <ActivePerformer
-                dots={dots}
-                instrument={instrument}
-                label={label}
-            />
+            <ActivePerformer currentIndex={currentIndex} label={label} />
         </Mafs>
     );
 };

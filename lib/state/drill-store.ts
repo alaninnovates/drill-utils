@@ -4,6 +4,8 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 export interface ViewData {
     hiddenSections: string[];
+    plusQuantity: number;
+    minusQuantity: number;
 }
 
 export type DrillState = {
@@ -38,8 +40,10 @@ export const initDrillStore = (): DrillState => {
         label: '',
         instrument: '',
         views: {
-            default: {
+            Default: {
                 hiddenSections: [],
+                plusQuantity: 0,
+                minusQuantity: 2,
             },
         },
     };
@@ -120,7 +124,11 @@ export const createDrillStore = (initState: DrillState = defaultInitState) => {
                         return {
                             views: {
                                 ...state.views,
-                                [newViewName]: { hiddenSections: [] },
+                                [newViewName]: {
+                                    hiddenSections: [],
+                                    plusQuantity: 0,
+                                    minusQuantity: 2,
+                                },
                             },
                         };
                     }),
