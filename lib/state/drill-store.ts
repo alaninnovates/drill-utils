@@ -6,6 +6,7 @@ export interface ViewData {
     hiddenSections: string[];
     plusQuantity: number;
     minusQuantity: number;
+    individualOnly: boolean;
 }
 
 export type DrillState = {
@@ -44,6 +45,7 @@ export const initDrillStore = (): DrillState => {
                 hiddenSections: [],
                 plusQuantity: 0,
                 minusQuantity: 2,
+                individualOnly: false,
             },
         },
     };
@@ -128,6 +130,7 @@ export const createDrillStore = (initState: DrillState = defaultInitState) => {
                                     hiddenSections: [],
                                     plusQuantity: 0,
                                     minusQuantity: 2,
+                                    individualOnly: false,
                                 },
                             },
                         };

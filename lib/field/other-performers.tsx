@@ -9,6 +9,9 @@ export const OtherPerformers = ({ currentIndex }: { currentIndex: number }) => {
     const { viewTransform } = useTransformContext();
     const { views, currentView } = useDrillStore((state) => state);
     const activeView = currentView ? views[currentView] : null;
+
+    if (activeView?.individualOnly) return null;
+
     return (
         <>
             {Object.values(dotData2025).map(

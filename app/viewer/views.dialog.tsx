@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { DialogHeader } from '@/components/ui/dialog';
 import {
     Dialog,
@@ -7,6 +8,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { sections } from '@/lib/dot/sections';
 import { useDrillStore } from '@/lib/state/drill-store-provider';
@@ -109,28 +111,48 @@ const ModifyView = ({
                     <TabsTrigger value="set_display">Set Display</TabsTrigger>
                 </TabsList>
                 <TabsContent value="sections">
-                    <div className="flex flex-col gap-2 max-h-96 overflow-y-auto sm:max-h-44 md:max-h-56">
-                        {sections.map((instrument) => {
-                            const isHidden =
-                                view.hiddenSections.includes(instrument);
-                            return (
-                                <div
-                                    key={instrument}
-                                    className="flex items-center justify-between p-2 border rounded hover:bg-gray-50 cursor-pointer"
-                                    onClick={() => toggleInstrument(instrument)}
-                                >
-                                    <span>{instrument}</span>
-                                    <span>
-                                        {isHidden ? (
-                                            <EyeClosed className="w-4 h-4" />
-                                        ) : (
-                                            <Eye className="w-4 h-4" />
-                                        )}
-                                    </span>
-                                </div>
-                            );
-                        })}
+                    <div className="flex items-center mt-2 mb-4 space-x-2">
+                        <Checkbox
+                            id="individualOnly"
+                            checked={view.individualOnly}
+                            onCheckedChange={(checkState) => {
+                                console.log('checkState', checkState);
+                                modifyView(currentModifyingView, {
+                                    ...view,
+                                    individualOnly: !!checkState.valueOf(),
+                                });
+                            }}
+                        />
+                        <Label htmlFor="individualOnly">
+                            Show only your dot
+                        </Label>
                     </div>
+                    {!view.individualOnly && (
+                        <div className="flex flex-col gap-2 max-h-96 overflow-y-auto sm:max-h-44 md:max-h-56">
+                            {sections.map((instrument) => {
+                                const isHidden =
+                                    view.hiddenSections.includes(instrument);
+                                return (
+                                    <div
+                                        key={instrument}
+                                        className="flex items-center justify-between p-2 border rounded hover:bg-gray-50 cursor-pointer"
+                                        onClick={() =>
+                                            toggleInstrument(instrument)
+                                        }
+                                    >
+                                        <span>{instrument}</span>
+                                        <span>
+                                            {isHidden ? (
+                                                <EyeClosed className="w-4 h-4" />
+                                            ) : (
+                                                <Eye className="w-4 h-4" />
+                                            )}
+                                        </span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
                 </TabsContent>
                 <TabsContent value="set_display">
                     <div className="flex flex-col gap-4 mt-4">
