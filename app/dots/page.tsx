@@ -20,10 +20,11 @@ export default function Page() {
     const pageLength = useDrillStore((store) => store.pages.length);
     const addPage = useDrillStore((store) => store.addPage);
     const clearPages = useDrillStore((store) => store.clearPages);
-    const { setLabel, setInstrument } = useDrillStore(
+    const { setLabel, setInstrument, setMovement } = useDrillStore(
         useShallow((store) => ({
             setLabel: store.setLabel,
             setInstrument: store.setInstrument,
+            setMovement: store.setMovement,
         })),
     );
 
@@ -79,13 +80,13 @@ export default function Page() {
                     trigger={
                         <Button className="ml-2">Select Instrument</Button>
                     }
-                    onSelect={(instrument) => {
+                    onSelect={(data, instrument, movement) => {
                         clearPages();
-                        dotData2025[instrument].dots.forEach((dot) =>
-                            addPage(dot),
-                        );
-                        setLabel(dotData2025[instrument].label);
-                        setInstrument(dotData2025[instrument].performer);
+                        console.log(data, instrument);
+                        data[instrument].dots.forEach((dot) => addPage(dot));
+                        setLabel(data[instrument].label);
+                        setInstrument(data[instrument].performer);
+                        setMovement(movement);
                     }}
                 />
                 <Button

@@ -10,6 +10,7 @@ export interface ViewData {
 }
 
 export type DrillState = {
+    movement: number;
     pages: DotbookEntry[];
     label: string;
     instrument: string;
@@ -31,12 +32,14 @@ export type DrillActions = {
     setCurrentView: (name: string) => void;
     deleteView: (name: string) => void;
     addView: () => void;
+    setMovement: (movement: number) => void;
 };
 
 export type DrillStore = DrillState & DrillActions;
 
 export const initDrillStore = (): DrillState => {
     return {
+        movement: 1,
         pages: [],
         label: '',
         instrument: '',
@@ -52,6 +55,7 @@ export const initDrillStore = (): DrillState => {
 };
 
 export const defaultInitState: DrillState = {
+    movement: 1,
     pages: [],
     label: '',
     instrument: '',
@@ -135,6 +139,7 @@ export const createDrillStore = (initState: DrillState = defaultInitState) => {
                             },
                         };
                     }),
+                setMovement: (movement: number) => set({ movement }),
             }),
             {
                 name: 'drill-storage',

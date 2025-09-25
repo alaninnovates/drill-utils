@@ -1,5 +1,5 @@
 import { Circle, Text, useTransformContext } from 'mafs';
-import { dotData2025 } from '../dot/data';
+import { dotData2025, dotData2025MV2 } from '../dot/data';
 import { instrumentToColor } from '../dot/color';
 import { dotToFieldCoordinate } from '../dot/parser';
 import React from 'react';
@@ -7,14 +7,14 @@ import { useDrillStore } from '../state/drill-store-provider';
 
 export const OtherPerformers = ({ currentIndex }: { currentIndex: number }) => {
     const { viewTransform } = useTransformContext();
-    const { views, currentView } = useDrillStore((state) => state);
+    const { views, currentView, movement } = useDrillStore((state) => state);
     const activeView = currentView ? views[currentView] : null;
 
     if (activeView?.individualOnly) return null;
 
     return (
         <>
-            {Object.values(dotData2025).map(
+            {Object.values(movement === 1 ? dotData2025 : dotData2025MV2).map(
                 ({ id, performer, label, dots }) => {
                     if (dots[currentIndex] == null) {
                         console.log(
