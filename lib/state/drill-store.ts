@@ -17,7 +17,7 @@ export type DrillState = {
     views: {
         [name: string]: ViewData;
     };
-    currentView?: string;
+    currentView: string;
 };
 
 export type DrillActions = {
@@ -51,6 +51,7 @@ export const initDrillStore = (): DrillState => {
                 individualOnly: false,
             },
         },
+        currentView: 'Default',
     };
 };
 
@@ -59,7 +60,15 @@ export const defaultInitState: DrillState = {
     pages: [],
     label: '',
     instrument: '',
-    views: {},
+    views: {
+        Default: {
+            hiddenSections: [],
+            plusQuantity: 0,
+            minusQuantity: 2,
+            individualOnly: false,
+        },
+    },
+    currentView: 'Default',
 };
 
 export const createDrillStore = (initState: DrillState = defaultInitState) => {
