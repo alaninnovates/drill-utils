@@ -46,8 +46,8 @@ export const initDrillStore = (): DrillState => {
         views: {
             Default: {
                 hiddenSections: [],
-                plusQuantity: 0,
-                minusQuantity: 2,
+                plusQuantity: 1,
+                minusQuantity: 1,
                 individualOnly: false,
             },
         },
@@ -63,8 +63,8 @@ export const defaultInitState: DrillState = {
     views: {
         Default: {
             hiddenSections: [],
-            plusQuantity: 0,
-            minusQuantity: 2,
+            plusQuantity: 1,
+            minusQuantity: 1,
             individualOnly: false,
         },
     },

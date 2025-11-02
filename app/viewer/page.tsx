@@ -1,7 +1,13 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { dotToFieldCoordinate } from '@/lib/dot/parser';
+import {
+    calculateMidset,
+    calculateStepSize,
+    dotCoordinatesEqual,
+    dotToFieldCoordinate,
+    fieldCoordinateToDot,
+} from '@/lib/dot/parser';
 import { MarchingField } from '@/lib/field/marching-field';
 import { useDrillStore } from '@/lib/state/drill-store-provider';
 import {
@@ -14,12 +20,10 @@ import {
     RectangleEllipsis,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { NotesDialog } from './notes.dialog';
 import { AllSetsDialog } from './all-sets.dialog';
 import { ViewsDialog } from './views.dialog';
-
-const MAX_DOTS_DISPLAYED = 3;
 
 export default function Page() {
     const pages = useDrillStore((store) => store.pages);
@@ -66,10 +70,31 @@ export default function Page() {
         );
     }
 
+    const midset =
+        dotStep < dotsLength - 1 &&
+        !dotCoordinatesEqual(pages[dotStep], pages[dotStep + 1])
+            ? fieldCoordinateToDot(
+                  calculateMidset(
+                      dotToFieldCoordinate(pages[dotStep]),
+                      dotToFieldCoordinate(pages[dotStep + 1]),
+                  ),
+              )
+            : null;
+
+    const stepSize =
+        dotStep < dotsLength - 1 &&
+        !dotCoordinatesEqual(pages[dotStep], pages[dotStep + 1])
+            ? calculateStepSize(
+                  pages[dotStep],
+                  pages[dotStep + 1],
+                  pages[dotStep + 1].counts,
+              )
+            : null;
+
     return (
         <div style={{ height: '100vh' }}>
             <MarchingField currentIndex={dotStep} />
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/20 backdrop-blur-sm rounded-lg p-4 z-10">
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/20 backdrop-blur-sm p-1 px-2 rounded-md z-10">
                 <div className="flex flex-col items-center gap-4">
                     <div className="flex items-center gap-2">
                         <Slider
@@ -80,7 +105,7 @@ export default function Page() {
                             onValueChange={(value) => {
                                 setDotStep(value[0]);
                             }}
-                            className="w-[300px]"
+                            className="w-[200px]"
                         />
                         <Button
                             onClick={() => {
@@ -106,13 +131,9 @@ export default function Page() {
                                 }, 500);
                                 setIntervalCache(interval);
                             }}
-                            className="text-white px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="text-white rounded"
                         >
-                            {isPlaying ? (
-                                <Pause className="h-4 w-4" />
-                            ) : (
-                                <Play className="h-4 w-4" />
-                            )}
+                            {isPlaying ? <Pause /> : <Play />}
                         </Button>
                     </div>
                 </div>
@@ -125,6 +146,7 @@ export default function Page() {
                         });
                     }}
                     disabled={dotStep === 0}
+                    className="bg-blue-600 disabled:opacity-50"
                 >
                     <ArrowLeft />
                 </Button>
@@ -135,6 +157,7 @@ export default function Page() {
                         });
                     }}
                     disabled={dotStep === dotsLength - 1}
+                    className="bg-blue-600 disabled:opacity-50"
                 >
                     <ArrowRight />
                 </Button>
@@ -147,7 +170,7 @@ export default function Page() {
                     trigger={
                         <Button>
                             <NotebookPen className="h-4 w-4" />
-                            Notes
+                            {/* Notes */}
                         </Button>
                     }
                     setName={pages[dotStep].set}
@@ -156,7 +179,7 @@ export default function Page() {
                     trigger={
                         <Button>
                             <RectangleEllipsis className="h-4 w-4" />
-                            All Sets
+                            {/* All Sets */}
                         </Button>
                     }
                     currentIndex={dotStep}
@@ -168,26 +191,56 @@ export default function Page() {
                     trigger={
                         <Button>
                             <Eye className="h-4 w-4" />
-                            Views
+                            {/* Views */}
                         </Button>
                     }
                 />
             </div>
-            <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-lg p-2">
-                <p className="text-lg text-white">
-                    Side {pages[dotStep].side}:{' '}
-                    {pages[dotStep].sideToSide.stepOffset}{' '}
-                    {pages[dotStep].sideToSide.stepOffsetDirection}{' '}
-                    {pages[dotStep].sideToSide.yardline} yd ln
-                </p>
-                <p className="text-lg text-white">
-                    {pages[dotStep].frontToBack.stepOffset}{' '}
-                    {pages[dotStep].frontToBack.stepOffsetDirection}{' '}
-                    {pages[dotStep].frontToBack.line}
-                </p>
-                <p className="text-lg text-white">
-                    {isHold ? 'Hold' : 'Move'}: {pages[dotStep].counts}
-                </p>
+            <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-lg p-2 flex gap-2">
+                <div>
+                    <p className="text-md text-white">Step Size</p>
+                    {stepSize !== null ? (
+                        <p className="text-md text-white">{stepSize} to 5</p>
+                    ) : (
+                        <p className="text-md text-white">-</p>
+                    )}
+                </div>
+                <div>
+                    <p className="text-md text-white">Midset</p>
+                    {midset !== null ? (
+                        <>
+                            <p className="text-md text-white">
+                                Side {midset.side}:{' '}
+                                {midset.sideToSide.stepOffset}{' '}
+                                {midset.sideToSide.stepOffsetDirection}{' '}
+                                {midset.sideToSide.yardline} yd ln
+                            </p>
+                            <p className="text-md text-white">
+                                {midset.frontToBack.stepOffset}{' '}
+                                {midset.frontToBack.stepOffsetDirection}{' '}
+                                {midset.frontToBack.line}
+                            </p>
+                        </>
+                    ) : (
+                        <p className="text-md text-white">-</p>
+                    )}
+                </div>
+                <div>
+                    <p className="text-md text-white">
+                        Side {pages[dotStep].side}:{' '}
+                        {pages[dotStep].sideToSide.stepOffset}{' '}
+                        {pages[dotStep].sideToSide.stepOffsetDirection}{' '}
+                        {pages[dotStep].sideToSide.yardline} yd ln
+                    </p>
+                    <p className="text-md text-white">
+                        {pages[dotStep].frontToBack.stepOffset}{' '}
+                        {pages[dotStep].frontToBack.stepOffsetDirection}{' '}
+                        {pages[dotStep].frontToBack.line}
+                    </p>
+                    <p className="text-md text-white">
+                        {isHold ? 'Hold' : 'Move'}: {pages[dotStep].counts}
+                    </p>
+                </div>
             </div>
         </div>
     );

@@ -78,7 +78,9 @@ export default function Page() {
                 </Button>
                 <SelectInstrumentDialog
                     trigger={
-                        <Button className="ml-2">Select Instrument</Button>
+                        <Button className="ml-2 bg-blue-600">
+                            Select Instrument
+                        </Button>
                     }
                     onSelect={(data, instrument, movement) => {
                         clearPages();
