@@ -29,10 +29,10 @@ export default function Page() {
     const pages = useDrillStore((store) => store.pages);
     const dotsLength = pages.length;
     const [dotStep, setDotStep] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [intervalCache, setIntervalCache] = useState<NodeJS.Timeout | null>(
-        null,
-    );
+    // const [isPlaying, setIsPlaying] = useState(false);
+    // const [intervalCache, setIntervalCache] = useState<NodeJS.Timeout | null>(
+    //     null,
+    // );
 
     const isHold = useMemo(() => {
         if (dotsLength === 0) return false;
@@ -94,50 +94,6 @@ export default function Page() {
     return (
         <div style={{ height: '100vh' }}>
             <MarchingField currentIndex={dotStep} />
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/20 backdrop-blur-sm p-1 px-2 rounded-md z-10">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="flex items-center gap-2">
-                        <Slider
-                            defaultValue={[0]}
-                            max={dotsLength - 1}
-                            step={1}
-                            value={[dotStep]}
-                            onValueChange={(value) => {
-                                setDotStep(value[0]);
-                            }}
-                            className="w-[200px]"
-                        />
-                        <Button
-                            onClick={() => {
-                                if (isPlaying) {
-                                    if (intervalCache) {
-                                        clearInterval(intervalCache);
-                                    }
-                                    setIntervalCache(null);
-                                    setIsPlaying(false);
-                                    return;
-                                }
-                                setIsPlaying(true);
-                                const interval = setInterval(() => {
-                                    setDotStep((prev) => {
-                                        if (prev >= dotsLength - 1) {
-                                            clearInterval(interval);
-                                            setIsPlaying(false);
-                                            return prev;
-                                        }
-                                        const newStep = prev + 1;
-                                        return newStep;
-                                    });
-                                }, 500);
-                                setIntervalCache(interval);
-                            }}
-                            className="text-white rounded"
-                        >
-                            {isPlaying ? <Pause /> : <Play />}
-                        </Button>
-                    </div>
-                </div>
-            </div>
             <div className="absolute bottom-4 right-4 flex gap-2">
                 <Button
                     onClick={() => {
@@ -162,15 +118,60 @@ export default function Page() {
                     <ArrowRight />
                 </Button>
             </div>
-            <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-sm rounded-lg p-2 flex items-center gap-2">
-                <p className="text-lg text-white mr-2">
+            <div className="absolute top-0 left-0 bg-white/20 backdrop-blur-sm p-2 px-4 flex gap-2 w-full justify-between">
+                <p className="text-md text-white mr-2">
                     Set {pages[dotStep].set}
                 </p>
+                <div>
+                    <p className="text-sm text-white">Step Size</p>
+                    {stepSize !== null ? (
+                        <p className="text-sm text-white">{stepSize} to 5</p>
+                    ) : (
+                        <p className="text-sm text-white">-</p>
+                    )}
+                </div>
+                <div>
+                    <p className="text-sm text-white">Midset</p>
+                    {midset !== null ? (
+                        <>
+                            <p className="text-sm text-white">
+                                Side {midset.side}:{' '}
+                                {midset.sideToSide.stepOffset}{' '}
+                                {midset.sideToSide.stepOffsetDirection}{' '}
+                                {midset.sideToSide.yardline} yd ln
+                            </p>
+                            <p className="text-sm text-white">
+                                {midset.frontToBack.stepOffset}{' '}
+                                {midset.frontToBack.stepOffsetDirection}{' '}
+                                {midset.frontToBack.line}
+                            </p>
+                        </>
+                    ) : (
+                        <p className="text-sm text-white">-</p>
+                    )}
+                </div>
+                <div>
+                    <p className="text-sm text-white">
+                        Side {pages[dotStep].side}:{' '}
+                        {pages[dotStep].sideToSide.stepOffset}{' '}
+                        {pages[dotStep].sideToSide.stepOffsetDirection}{' '}
+                        {pages[dotStep].sideToSide.yardline} yd ln
+                    </p>
+                    <p className="text-sm text-white">
+                        {pages[dotStep].frontToBack.stepOffset}{' '}
+                        {pages[dotStep].frontToBack.stepOffsetDirection}{' '}
+                        {pages[dotStep].frontToBack.line}
+                    </p>
+                    <p className="text-sm text-white">
+                        {isHold ? 'Hold' : 'Move'}: {pages[dotStep].counts}
+                    </p>
+                </div>
+            </div>
+            <div className="absolute top-1/2 right-4 transform -translate-y-1/2 flex flex-col gap-2 bg-white/20 backdrop-blur-sm p-2 rounded-md">
                 <NotesDialog
                     trigger={
                         <Button>
                             <NotebookPen className="h-4 w-4" />
-                            {/* Notes */}
                         </Button>
                     }
                     setName={pages[dotStep].set}
@@ -179,7 +180,6 @@ export default function Page() {
                     trigger={
                         <Button>
                             <RectangleEllipsis className="h-4 w-4" />
-                            {/* All Sets */}
                         </Button>
                     }
                     currentIndex={dotStep}
@@ -191,56 +191,50 @@ export default function Page() {
                     trigger={
                         <Button>
                             <Eye className="h-4 w-4" />
-                            {/* Views */}
                         </Button>
                     }
                 />
             </div>
-            <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-lg p-2 flex gap-2">
-                <div>
-                    <p className="text-md text-white">Step Size</p>
-                    {stepSize !== null ? (
-                        <p className="text-md text-white">{stepSize} to 5</p>
-                    ) : (
-                        <p className="text-md text-white">-</p>
-                    )}
-                </div>
-                <div>
-                    <p className="text-md text-white">Midset</p>
-                    {midset !== null ? (
-                        <>
-                            <p className="text-md text-white">
-                                Side {midset.side}:{' '}
-                                {midset.sideToSide.stepOffset}{' '}
-                                {midset.sideToSide.stepOffsetDirection}{' '}
-                                {midset.sideToSide.yardline} yd ln
-                            </p>
-                            <p className="text-md text-white">
-                                {midset.frontToBack.stepOffset}{' '}
-                                {midset.frontToBack.stepOffsetDirection}{' '}
-                                {midset.frontToBack.line}
-                            </p>
-                        </>
-                    ) : (
-                        <p className="text-md text-white">-</p>
-                    )}
-                </div>
-                <div>
-                    <p className="text-md text-white">
-                        Side {pages[dotStep].side}:{' '}
-                        {pages[dotStep].sideToSide.stepOffset}{' '}
-                        {pages[dotStep].sideToSide.stepOffsetDirection}{' '}
-                        {pages[dotStep].sideToSide.yardline} yd ln
-                    </p>
-                    <p className="text-md text-white">
-                        {pages[dotStep].frontToBack.stepOffset}{' '}
-                        {pages[dotStep].frontToBack.stepOffsetDirection}{' '}
-                        {pages[dotStep].frontToBack.line}
-                    </p>
-                    <p className="text-md text-white">
-                        {isHold ? 'Hold' : 'Move'}: {pages[dotStep].counts}
-                    </p>
-                </div>
+            <div className="absolute top-1/2 left-4 transform -translate-y-1/2 flex flex-col items-center gap-2 bg-white/20 backdrop-blur-sm p-2 rounded-md">
+                {/* <Button
+                    onClick={() => {
+                        if (isPlaying) {
+                            if (intervalCache) {
+                                clearInterval(intervalCache);
+                            }
+                            setIntervalCache(null);
+                            setIsPlaying(false);
+                            return;
+                        }
+                        setIsPlaying(true);
+                        const interval = setInterval(() => {
+                            setDotStep((prev) => {
+                                if (prev >= dotsLength - 1) {
+                                    clearInterval(interval);
+                                    setIsPlaying(false);
+                                    return prev;
+                                }
+                                const newStep = prev + 1;
+                                return newStep;
+                            });
+                        }, 500);
+                        setIntervalCache(interval);
+                    }}
+                    className="text-white rounded"
+                >
+                    {isPlaying ? <Pause /> : <Play />}
+                </Button> */}
+                <Slider
+                    orientation="vertical"
+                    defaultValue={[0]}
+                    max={dotsLength - 1}
+                    step={1}
+                    value={[dotStep]}
+                    onValueChange={(value) => {
+                        setDotStep(value[0]);
+                    }}
+                    className="h-28"
+                />
             </div>
         </div>
     );
