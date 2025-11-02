@@ -10,16 +10,19 @@ import {
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { instrumentToColor } from '@/lib/dot/color';
-import { dotData2025, dotData2025MV2 } from '@/lib/dot/data';
+import { dotData2025, dotData2025MV2, dotData2025MV3 } from '@/lib/dot/data';
 
 const SelectListYear = ({
     data,
     onSelect,
     movement,
 }: {
-    data: typeof dotData2025 | typeof dotData2025MV2;
+    data: typeof dotData2025 | typeof dotData2025MV2 | typeof dotData2025MV3;
     onSelect: (
-        data: typeof dotData2025 | typeof dotData2025MV2,
+        data:
+            | typeof dotData2025
+            | typeof dotData2025MV2
+            | typeof dotData2025MV3,
         instrument: string,
         movement: number,
     ) => void;
@@ -51,7 +54,10 @@ export const SelectInstrumentDialog = ({
 }: {
     trigger: React.ReactNode;
     onSelect: (
-        data: typeof dotData2025 | typeof dotData2025MV2,
+        data:
+            | typeof dotData2025
+            | typeof dotData2025MV2
+            | typeof dotData2025MV3,
         instrument: string,
         movement: number,
     ) => void;
@@ -70,6 +76,7 @@ export const SelectInstrumentDialog = ({
                     <TabsList>
                         <TabsTrigger value="mv1">Movement 1</TabsTrigger>
                         <TabsTrigger value="mv2">Movement 2</TabsTrigger>
+                        <TabsTrigger value="mv3">Movement 3</TabsTrigger>
                     </TabsList>
                     <TabsContent value="mv1">
                         <SelectListYear
@@ -83,6 +90,13 @@ export const SelectInstrumentDialog = ({
                             data={dotData2025MV2}
                             onSelect={onSelect}
                             movement={2}
+                        />
+                    </TabsContent>
+                    <TabsContent value="mv3">
+                        <SelectListYear
+                            data={dotData2025MV3}
+                            onSelect={onSelect}
+                            movement={3}
                         />
                     </TabsContent>
                 </Tabs>
