@@ -16,6 +16,17 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
     title: 'Drill Utils',
     description: 'Easily learn drill for marching band using this visualizer.',
+    appleWebApp: {
+        title: 'Drill Utils',
+    },
+    icons: {
+        icon: [
+            { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+            { url: '/favicon.svg', type: 'image/svg+xml' },
+        ],
+        shortcut: '/favicon.ico',
+        apple: '/apple-touch-icon.png',
+    },
 };
 
 export default function RootLayout({
