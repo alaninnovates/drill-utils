@@ -8,6 +8,11 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { DialogTitle } from '@radix-ui/react-dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 export const AllSetsDialog = ({
     trigger,
@@ -22,7 +27,18 @@ export const AllSetsDialog = ({
     return (
         <Dialog>
             <DialogTrigger asChild>{trigger}</DialogTrigger>
-            <DialogContent className="max-w-fit min-w-fit max-h-[80vh] overflow-y-auto">
+            <DialogContent className="min-w-full max-h-[80vh] overflow-y-auto">
+                <VisuallyHidden>
+                    <DialogTitle>All Sets</DialogTitle>
+                </VisuallyHidden>
+                <div className="mb-4">
+                    <Link href="/dots">
+                        <Button variant="link">
+                            <ArrowLeft />
+                            Configure Dots
+                        </Button>
+                    </Link>
+                </div>
                 <Table>
                     <TableHeader>
                         <TableRow>

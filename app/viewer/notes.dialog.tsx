@@ -19,7 +19,7 @@ export const NotesDialog = ({
     return (
         <Dialog>
             <DialogTrigger asChild>{trigger}</DialogTrigger>
-            <DialogContent>
+            <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle>Notes - S{setName}</DialogTitle>
                 </DialogHeader>
