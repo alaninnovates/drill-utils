@@ -29,10 +29,10 @@ export default function Page() {
     const pages = useDrillStore((store) => store.pages);
     const dotsLength = pages.length;
     const [dotStep, setDotStep] = useState(0);
-    // const [isPlaying, setIsPlaying] = useState(false);
-    // const [intervalCache, setIntervalCache] = useState<NodeJS.Timeout | null>(
-    //     null,
-    // );
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [intervalCache, setIntervalCache] = useState<NodeJS.Timeout | null>(
+        null,
+    );
 
     const isHold = useMemo(() => {
         if (dotsLength === 0) return false;
@@ -194,9 +194,7 @@ export default function Page() {
                         </Button>
                     }
                 />
-            </div>
-            <div className="absolute top-1/2 left-4 transform -translate-y-1/2 flex flex-col items-center gap-2 bg-white/20 backdrop-blur-sm p-2 rounded-md">
-                {/* <Button
+                <Button
                     onClick={() => {
                         if (isPlaying) {
                             if (intervalCache) {
@@ -223,7 +221,9 @@ export default function Page() {
                     className="text-white rounded"
                 >
                     {isPlaying ? <Pause /> : <Play />}
-                </Button> */}
+                </Button>
+            </div>
+            <div className="absolute top-1/2 left-4 transform -translate-y-1/2 flex flex-col items-center gap-2 bg-white/20 backdrop-blur-sm p-2 rounded-md">
                 <Slider
                     orientation="vertical"
                     defaultValue={[0]}
