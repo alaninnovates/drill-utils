@@ -12,8 +12,11 @@ export default function LogoutButton() {
     };
 
     return (
-        <div className="absolute top-4 right-4">
-            <Button onClick={handleLogout} variant="outline">
+        <div className="absolute top-8 left-8">
+            <Button
+                onClick={handleLogout}
+                className="border-destructive text-destructive border-2 bg-white"
+            >
                 Logout
             </Button>
         </div>

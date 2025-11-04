@@ -14,6 +14,7 @@ import {
     ArrowLeft,
     ArrowRight,
     Eye,
+    Home,
     NotebookPen,
     Pause,
     Play,
@@ -117,6 +118,14 @@ export default function Page() {
                 </Button>
             </div>
             <div className="absolute top-0 left-0 dark:bg-white/20 bg-black/60 backdrop-blur-sm p-2 px-4 flex gap-2 w-full justify-between">
+                <div className="flex items-center gap-2">
+                    <Link href="/">
+                        <Button>
+                            <ArrowLeft />
+                            Home
+                        </Button>
+                    </Link>
+                </div>
                 <p className="text-md md:text-lg text-white mr-2">
                     Set {pages[dotStep].set}
                 </p>
@@ -176,7 +185,7 @@ export default function Page() {
                     }
                     setName={pages[dotStep].set}
                 />
-                <AllSetsDialog
+                {/* <AllSetsDialog
                     trigger={
                         <Button>
                             <RectangleEllipsis className="h-4 w-4" />
@@ -193,7 +202,7 @@ export default function Page() {
                             <Eye className="h-4 w-4" />
                         </Button>
                     }
-                />
+                /> */}
                 <Button
                     onClick={() => {
                         if (isPlaying) {
