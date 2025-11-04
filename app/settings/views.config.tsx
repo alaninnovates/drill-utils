@@ -1,12 +1,5 @@
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { DialogHeader } from '@/components/ui/dialog';
-import {
-    Dialog,
-    DialogTrigger,
-    DialogContent,
-    DialogTitle,
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -193,51 +186,48 @@ const ModifyView = ({
     );
 };
 
-export const ViewsDialog = ({ trigger }: { trigger: React.ReactNode }) => {
+export const ViewsSettings = () => {
     const [currentModifyingView, setCurrentModifyingView] = useState<
         string | null
     >();
     const addView = useDrillStore((store) => store.addView);
 
     return (
-        <Dialog>
-            <DialogTrigger asChild>{trigger}</DialogTrigger>
-            <DialogContent showCloseButton={false}>
-                <DialogHeader className="flex items-center gap-4 flex-row">
-                    {currentModifyingView && (
-                        <Button
-                            variant="secondary"
-                            onClick={() => setCurrentModifyingView(null)}
-                        >
-                            <ArrowLeft className="w-4 h-4" />
-                        </Button>
-                    )}
-                    <DialogTitle>
-                        Views
-                        {currentModifyingView && ` - ${currentModifyingView}`}
-                    </DialogTitle>
-                    <div className="flex-1" />
+        <div>
+            <div className="flex items-center gap-4 flex-row">
+                {currentModifyingView && (
                     <Button
-                        onClick={() => {
-                            addView();
-                        }}
+                        variant="secondary"
+                        onClick={() => setCurrentModifyingView(null)}
                     >
-                        <Plus className="w-4 h-4" />
+                        <ArrowLeft className="w-4 h-4" />
                     </Button>
-                </DialogHeader>
-                {currentModifyingView ? (
-                    <ModifyView
-                        currentModifyingView={currentModifyingView}
-                        setCurrentModifyingView={setCurrentModifyingView}
-                    />
-                ) : (
-                    <ViewList
-                        setCurrentModifyingView={(viewName) =>
-                            setCurrentModifyingView(viewName)
-                        }
-                    />
                 )}
-            </DialogContent>
-        </Dialog>
+                <h2 className="text-2xl font-semibold mb-4">
+                    Views
+                    {currentModifyingView && ` - ${currentModifyingView}`}
+                </h2>
+                <div className="flex-1" />
+                <Button
+                    onClick={() => {
+                        addView();
+                    }}
+                >
+                    <Plus className="w-4 h-4" />
+                </Button>
+            </div>
+            {currentModifyingView ? (
+                <ModifyView
+                    currentModifyingView={currentModifyingView}
+                    setCurrentModifyingView={setCurrentModifyingView}
+                />
+            ) : (
+                <ViewList
+                    setCurrentModifyingView={(viewName) =>
+                        setCurrentModifyingView(viewName)
+                    }
+                />
+            )}
+        </div>
     );
 };

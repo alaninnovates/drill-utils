@@ -10,21 +10,10 @@ import {
 } from '@/lib/dot/parser';
 import { MarchingField } from '@/lib/field/marching-field';
 import { useDrillStore } from '@/lib/state/drill-store-provider';
-import {
-    ArrowLeft,
-    ArrowRight,
-    Eye,
-    Home,
-    NotebookPen,
-    Pause,
-    Play,
-    RectangleEllipsis,
-} from 'lucide-react';
+import { ArrowLeft, ArrowRight, NotebookPen, Pause, Play } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { NotesDialog } from './notes.dialog';
-import { AllSetsDialog } from './all-sets.dialog';
-import { ViewsDialog } from './views.dialog';
 
 export default function Page() {
     const pages = useDrillStore((store) => store.pages);

@@ -31,10 +31,10 @@ export default function Page() {
     return (
         <div className="py-10 md:container md:mx-auto px-4">
             <div className="mb-4">
-                <Link href="/viewer">
+                <Link href="/">
                     <Button variant="link">
                         <ArrowLeft />
-                        Back to Drill
+                        Home
                     </Button>
                 </Link>
             </div>
