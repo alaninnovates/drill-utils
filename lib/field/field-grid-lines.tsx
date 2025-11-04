@@ -124,8 +124,8 @@ export const FieldGridLines = () => {
                         <React.Fragment key={`num-${x}`}>
                             <Text
                                 x={x}
-                                y={11.4 * (5 / 8)}
-                                size={18 * viewTransform['0'] * 0.148}
+                                y={11.2 * (5 / 8)}
+                                size={19.5 * viewTransform['0'] * 0.148}
                                 color={isDarkMode ? 'white' : 'gray'}
                                 attach="n"
                             >
@@ -133,8 +133,8 @@ export const FieldGridLines = () => {
                             </Text>
                             <Text
                                 x={-x}
-                                y={-(FIELD_WIDTH - 11.4 * (5 / 8))}
-                                size={18 * viewTransform['0'] * 0.148}
+                                y={-(FIELD_WIDTH - 11.2 * (5 / 8))}
+                                size={19.5 * viewTransform['0'] * 0.148}
                                 color={isDarkMode ? 'white' : 'gray'}
                                 attach="n"
                                 svgTextProps={{ transform: 'scale(-1,-1)' }}
