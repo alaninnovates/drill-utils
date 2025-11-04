@@ -7,7 +7,7 @@ import { ViewsSettings } from './views.config';
 
 export default function Page() {
     return (
-        <div className="h-screen flex flex-col pt-[env(safe-area-inset-top)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)]">
+        <div className="h-screen flex flex-col p-safe">
             <div className="border-b p-4">
                 <Link href="/">
                     <Button variant="ghost">

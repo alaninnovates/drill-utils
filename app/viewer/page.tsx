@@ -106,7 +106,7 @@ export default function Page() {
                     <ArrowRight />
                 </Button>
             </div>
-            <div className="absolute top-0 left-0 dark:bg-white/20 bg-black/60 backdrop-blur-sm p-2 px-4 flex gap-2 w-full justify-between">
+            <div className="absolute top-0 left-0 px-safe dark:bg-white/20 bg-black/60 backdrop-blur-sm p-2 px-4 flex gap-2 w-full justify-between">
                 <div className="flex items-center gap-2">
                     <Link href="/">
                         <Button>
@@ -221,7 +221,7 @@ export default function Page() {
                     {isPlaying ? <Pause /> : <Play />}
                 </Button>
             </div>
-            <div className="absolute top-1/2 left-4 transform -translate-y-1/2 flex flex-col items-center gap-2 bg-white/20 backdrop-blur-sm p-2 rounded-md">
+            <div className="absolute top-1/2 left-4 mx-safe transform -translate-y-1/2 flex flex-col items-center gap-2 bg-white/20 backdrop-blur-sm p-2 rounded-md">
                 <Slider
                     orientation="vertical"
                     defaultValue={[0]}
