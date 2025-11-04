@@ -71,23 +71,21 @@ export default function Page() {
     }
 
     const midset =
-        dotStep < dotsLength - 1 &&
-        !dotCoordinatesEqual(pages[dotStep], pages[dotStep + 1])
+        dotStep > 0 && !dotCoordinatesEqual(pages[dotStep - 1], pages[dotStep])
             ? fieldCoordinateToDot(
                   calculateMidset(
+                      dotToFieldCoordinate(pages[dotStep - 1]),
                       dotToFieldCoordinate(pages[dotStep]),
-                      dotToFieldCoordinate(pages[dotStep + 1]),
                   ),
               )
             : null;
 
     const stepSize =
-        dotStep < dotsLength - 1 &&
-        !dotCoordinatesEqual(pages[dotStep], pages[dotStep + 1])
+        dotStep > 0 && !dotCoordinatesEqual(pages[dotStep - 1], pages[dotStep])
             ? calculateStepSize(
+                  pages[dotStep - 1],
                   pages[dotStep],
-                  pages[dotStep + 1],
-                  pages[dotStep + 1].counts,
+                  pages[dotStep].counts,
               )
             : null;
 
