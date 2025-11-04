@@ -4,10 +4,13 @@ import { instrumentToColor } from '../dot/color';
 import { dotToFieldCoordinate } from '../dot/parser';
 import React from 'react';
 import { useDrillStore } from '../state/drill-store-provider';
+import { useColorScheme } from '../hooks/useColorScheme';
 
 export const OtherPerformers = ({ currentIndex }: { currentIndex: number }) => {
     const { viewTransform } = useTransformContext();
     const { views, currentView, movement } = useDrillStore((state) => state);
+    const { isDarkMode } = useColorScheme();
+
     const activeView = currentView ? views[currentView] : null;
 
     if (activeView?.individualOnly) return null;
@@ -39,7 +42,10 @@ export const OtherPerformers = ({ currentIndex }: { currentIndex: number }) => {
                         <Circle
                             key={id}
                             center={[coord.x, coord.y]}
-                            radius={0.2}
+                            radius={
+                                1 /
+                                (Math.log(viewTransform['0']) / Math.log(2.5))
+                            }
                             color={instrumentToColor(performer)}
                             fillOpacity={1}
                         />
@@ -47,7 +53,7 @@ export const OtherPerformers = ({ currentIndex }: { currentIndex: number }) => {
                             key={`text-${id}`}
                             x={coord.x}
                             y={coord.y}
-                            color="white"
+                            color={isDarkMode ? 'white' : 'black'}
                             size={viewTransform['0'] * 0.148 * 2}
                         >
                             {label}

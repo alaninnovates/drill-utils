@@ -3,6 +3,7 @@ import React from 'react';
 import { calculateMidset, dotToFieldCoordinate } from '../dot/parser';
 import { useDrillStore } from '../state/drill-store-provider';
 import { DotbookEntry } from '../dot/types';
+import { useColorScheme } from '../hooks/useColorScheme';
 
 const CurrentPageDisplay = ({
     coord,
@@ -12,34 +13,37 @@ const CurrentPageDisplay = ({
     coord: { x: number; y: number };
     label: string;
     viewTransform: vec.Matrix;
-}) => (
-    <>
-        <Circle
-            center={[coord.x, coord.y]}
-            radius={0.2}
-            color="red"
-            fillOpacity={1}
-        />
-        <Polygon
-            points={[
-                // square around the dot
-                [coord.x - 0.4, coord.y - 0.4],
-                [coord.x + 0.4, coord.y - 0.4],
-                [coord.x + 0.4, coord.y + 0.4],
-                [coord.x - 0.4, coord.y + 0.4],
-            ]}
-            color="red"
-        />
-        <Text
-            x={coord.x}
-            y={coord.y}
-            color="white"
-            size={viewTransform['0'] * 0.148 * 2}
-        >
-            {label}
-        </Text>
-    </>
-);
+}) => {
+    const { isDarkMode } = useColorScheme();
+    return (
+        <>
+            <Circle
+                center={[coord.x, coord.y]}
+                radius={1 / (Math.log(viewTransform['0']) / Math.log(2.5))}
+                color="red"
+                fillOpacity={1}
+            />
+            <Polygon
+                points={[
+                    // square around the dot
+                    [coord.x - 0.4, coord.y - 0.4],
+                    [coord.x + 0.4, coord.y - 0.4],
+                    [coord.x + 0.4, coord.y + 0.4],
+                    [coord.x - 0.4, coord.y + 0.4],
+                ]}
+                color="red"
+            />
+            <Text
+                x={coord.x}
+                y={coord.y}
+                color={isDarkMode ? 'white' : 'black'}
+                size={viewTransform['0'] * 0.148 * 2}
+            >
+                {label}
+            </Text>
+        </>
+    );
+};
 
 const AdditionalPagesDisplay = ({
     pages,
@@ -79,7 +83,7 @@ const AdditionalPagesDisplay = ({
                             <Circle
                                 center={midCoord}
                                 radius={0.1}
-                                color="white"
+                                color={direction === -1 ? 'blue' : 'green'}
                                 fillOpacity={1}
                             />
                         )}

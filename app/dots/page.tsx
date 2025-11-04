@@ -29,7 +29,7 @@ export default function Page() {
     );
 
     return (
-        <div className="py-10">
+        <div className="py-10 md:container md:mx-auto px-4">
             <div className="mb-4">
                 <Link href="/viewer">
                     <Button variant="link">

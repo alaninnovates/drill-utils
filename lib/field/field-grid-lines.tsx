@@ -7,9 +7,12 @@ import {
     FRONT_HASH_Y,
     BACK_HASH_Y,
 } from './field-constants';
+import { useColorScheme } from '../hooks/useColorScheme';
 
 export const FieldGridLines = () => {
     const { viewTransform } = useTransformContext();
+    const { isDarkMode } = useColorScheme();
+
     const showOneYardGrid = viewTransform['0'] > 14;
 
     const yardNumberAtX = (x: number) => {
@@ -55,7 +58,7 @@ export const FieldGridLines = () => {
                         key={`grid-${x}`}
                         point1={[x, 0]}
                         point2={[x, FIELD_WIDTH]}
-                        color="white"
+                        color={isDarkMode ? 'white' : '#b9e9ea'}
                         opacity={0.15}
                     />
                 ))}
@@ -64,7 +67,7 @@ export const FieldGridLines = () => {
                     key={`five-${x}`}
                     point1={[x, 0]}
                     point2={[x, FIELD_WIDTH]}
-                    color="white"
+                    color={isDarkMode ? 'white' : '#b9e9ea'}
                     weight={x % 5 === 0 ? 2.5 : 1.5}
                     opacity={x % 5 === 0 ? 0.9 : 0.6}
                 />
@@ -76,7 +79,7 @@ export const FieldGridLines = () => {
                         key={`hgrid-${y}`}
                         point1={[0, y]}
                         point2={[FIELD_LENGTH, y]}
-                        color="white"
+                        color={isDarkMode ? 'white' : '#b9e9ea'}
                         opacity={0.15}
                     />
                 ))}
@@ -85,7 +88,7 @@ export const FieldGridLines = () => {
                     key={`hfive-${y}`}
                     point1={[0, y]}
                     point2={[FIELD_LENGTH, y]}
-                    color="white"
+                    color={isDarkMode ? 'white' : '#b9e9ea'}
                     weight={1.5}
                     opacity={0.6}
                 />
@@ -95,14 +98,14 @@ export const FieldGridLines = () => {
             <Line.Segment
                 point1={[0, FRONT_HASH_Y]}
                 point2={[FIELD_LENGTH, FRONT_HASH_Y]}
-                color="white"
+                color={isDarkMode ? 'white' : 'gray'}
                 weight={2}
                 opacity={0.85}
             />
             <Line.Segment
                 point1={[0, BACK_HASH_Y]}
                 point2={[FIELD_LENGTH, BACK_HASH_Y]}
-                color="white"
+                color={isDarkMode ? 'white' : 'gray'}
                 weight={2}
                 opacity={0.85}
             />
@@ -123,7 +126,7 @@ export const FieldGridLines = () => {
                                 x={x}
                                 y={11.4 * (5 / 8)}
                                 size={18 * viewTransform['0'] * 0.148}
-                                color="white"
+                                color={isDarkMode ? 'white' : 'gray'}
                                 attach="n"
                             >
                                 {label}
@@ -132,7 +135,7 @@ export const FieldGridLines = () => {
                                 x={-x}
                                 y={-(FIELD_WIDTH - 11.4 * (5 / 8))}
                                 size={18 * viewTransform['0'] * 0.148}
-                                color="white"
+                                color={isDarkMode ? 'white' : 'gray'}
                                 attach="n"
                                 svgTextProps={{ transform: 'scale(-1,-1)' }}
                             >
@@ -146,7 +149,7 @@ export const FieldGridLines = () => {
             <Line.Segment
                 point1={[FIELD_LENGTH / 2, 0]}
                 point2={[FIELD_LENGTH / 2, FIELD_WIDTH]}
-                color="white"
+                color={isDarkMode ? 'white' : 'gray'}
                 weight={3}
                 opacity={0.9}
             />

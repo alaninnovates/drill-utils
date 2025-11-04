@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Mafs } from 'mafs';
+import { Line, Mafs } from 'mafs';
 import 'mafs/core.css';
 
 import { FIELD_LENGTH, FIELD_WIDTH } from './field-constants';
@@ -9,9 +9,11 @@ import { FieldGridLines } from './field-grid-lines';
 import { OtherPerformers } from './other-performers';
 import { useDrillStore } from '../state/drill-store-provider';
 import { ActivePerformer } from './active-performer';
+import { useColorScheme } from '../hooks/useColorScheme';
 
 export const MarchingField = ({ currentIndex }: { currentIndex: number }) => {
     const { label } = useDrillStore((store) => store);
+    const { isDarkMode } = useColorScheme();
 
     const [clientHeight, setClientHeight] = useState(0);
     useEffect(() => {
@@ -25,7 +27,7 @@ export const MarchingField = ({ currentIndex }: { currentIndex: number }) => {
             preserveAspectRatio="contain"
             height={clientHeight}
         >
-            {/* <style>{`
+            <style>{`
             .MafsView {
         color-scheme: light dark;
 
@@ -45,11 +47,37 @@ export const MarchingField = ({ currentIndex }: { currentIndex: number }) => {
         --mafs-violet: light-dark(#ae58ff, #d39eff);
         --mafs-pink: light-dark(#ee00ab, #ff7bde);
     }
-    `}</style> */}
+    `}</style>
             <FieldContainer />
             <FieldGridLines />
             <OtherPerformers currentIndex={currentIndex} />
             <ActivePerformer currentIndex={currentIndex} label={label} />
+
+            {/* field outline */}
+            <Line.Segment
+                point1={[0, 0]}
+                point2={[FIELD_LENGTH, 0]}
+                color={isDarkMode ? 'white' : 'black'}
+                weight={3}
+            />
+            <Line.Segment
+                point1={[0, FIELD_WIDTH]}
+                point2={[FIELD_LENGTH, FIELD_WIDTH]}
+                color={isDarkMode ? 'white' : 'black'}
+                weight={3}
+            />
+            <Line.Segment
+                point1={[0, 0]}
+                point2={[0, FIELD_WIDTH]}
+                color={isDarkMode ? 'white' : 'black'}
+                weight={3}
+            />
+            <Line.Segment
+                point1={[FIELD_LENGTH, 0]}
+                point2={[FIELD_LENGTH, FIELD_WIDTH]}
+                color={isDarkMode ? 'white' : 'black'}
+                weight={3}
+            />
         </Mafs>
     );
 };

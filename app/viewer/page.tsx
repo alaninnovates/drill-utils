@@ -118,51 +118,53 @@ export default function Page() {
                     <ArrowRight />
                 </Button>
             </div>
-            <div className="absolute top-0 left-0 bg-white/20 backdrop-blur-sm p-2 px-4 flex gap-2 w-full justify-between">
-                <p className="text-md text-white mr-2">
+            <div className="absolute top-0 left-0 dark:bg-white/20 bg-black/60 backdrop-blur-sm p-2 px-4 flex gap-2 w-full justify-between">
+                <p className="text-md md:text-lg text-white mr-2">
                     Set {pages[dotStep].set}
                 </p>
                 <div>
-                    <p className="text-sm text-white">Step Size</p>
+                    <p className="text-sm md:text-base text-white">Step Size</p>
                     {stepSize !== null ? (
-                        <p className="text-sm text-white">{stepSize} to 5</p>
+                        <p className="text-sm md:text-base text-white">
+                            {stepSize} to 5
+                        </p>
                     ) : (
-                        <p className="text-sm text-white">-</p>
+                        <p className="text-sm md:text-base text-white">-</p>
                     )}
                 </div>
                 <div>
-                    <p className="text-sm text-white">Midset</p>
+                    <p className="text-sm md:text-base text-white">Midset</p>
                     {midset !== null ? (
                         <>
-                            <p className="text-sm text-white">
+                            <p className="text-sm md:text-base text-white">
                                 Side {midset.side}:{' '}
                                 {midset.sideToSide.stepOffset}{' '}
                                 {midset.sideToSide.stepOffsetDirection}{' '}
                                 {midset.sideToSide.yardline} yd ln
                             </p>
-                            <p className="text-sm text-white">
+                            <p className="text-sm md:text-base text-white">
                                 {midset.frontToBack.stepOffset}{' '}
                                 {midset.frontToBack.stepOffsetDirection}{' '}
                                 {midset.frontToBack.line}
                             </p>
                         </>
                     ) : (
-                        <p className="text-sm text-white">-</p>
+                        <p className="text-sm md:text-base text-white">-</p>
                     )}
                 </div>
                 <div>
-                    <p className="text-sm text-white">
+                    <p className="text-sm md:text-base text-white">
                         Side {pages[dotStep].side}:{' '}
                         {pages[dotStep].sideToSide.stepOffset}{' '}
                         {pages[dotStep].sideToSide.stepOffsetDirection}{' '}
                         {pages[dotStep].sideToSide.yardline} yd ln
                     </p>
-                    <p className="text-sm text-white">
+                    <p className="text-sm md:text-base text-white">
                         {pages[dotStep].frontToBack.stepOffset}{' '}
                         {pages[dotStep].frontToBack.stepOffsetDirection}{' '}
                         {pages[dotStep].frontToBack.line}
                     </p>
-                    <p className="text-sm text-white">
+                    <p className="text-sm md:text-base text-white">
                         {isHold ? 'Hold' : 'Move'}: {pages[dotStep].counts}
                     </p>
                 </div>

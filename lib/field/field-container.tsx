@@ -1,8 +1,10 @@
 import React from 'react';
-import { Polygon, Line } from 'mafs';
+import { Polygon } from 'mafs';
 import { FIELD_LENGTH, END_ZONE, FIELD_WIDTH } from './field-constants';
+import { useColorScheme } from '../hooks/useColorScheme';
 
 export const FieldContainer = () => {
+    const { isDarkMode } = useColorScheme();
     return (
         <>
             <Polygon
@@ -12,7 +14,7 @@ export const FieldContainer = () => {
                     [FIELD_LENGTH, FIELD_WIDTH],
                     [0, FIELD_WIDTH],
                 ]}
-                color="#106b21"
+                color={isDarkMode ? '#106b21' : '#ffffff'}
                 strokeOpacity={1}
             />
 
@@ -36,32 +38,6 @@ export const FieldContainer = () => {
                 ]}
                 color="#00ff00"
                 strokeOpacity={1}
-            />
-
-            {/* field outline */}
-            <Line.Segment
-                point1={[0, 0]}
-                point2={[FIELD_LENGTH, 0]}
-                color="white"
-                weight={3}
-            />
-            <Line.Segment
-                point1={[0, FIELD_WIDTH]}
-                point2={[FIELD_LENGTH, FIELD_WIDTH]}
-                color="white"
-                weight={3}
-            />
-            <Line.Segment
-                point1={[0, 0]}
-                point2={[0, FIELD_WIDTH]}
-                color="white"
-                weight={3}
-            />
-            <Line.Segment
-                point1={[FIELD_LENGTH, 0]}
-                point2={[FIELD_LENGTH, FIELD_WIDTH]}
-                color="white"
-                weight={3}
             />
         </>
     );
