@@ -9,23 +9,14 @@ import {
 } from '@/components/ui/table';
 import { useDrillStore } from '@/lib/state/drill-store-provider';
 import { Button } from '@/components/ui/button';
-import { SelectInstrumentDialog } from './select-instrument.dialog';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { DotRow } from './dot-row';
-import { useShallow } from 'zustand/shallow';
-import { dotData2025 } from '@/lib/dot/data';
 
 export default function Page() {
     const pageLength = useDrillStore((store) => store.pages.length);
     const addPage = useDrillStore((store) => store.addPage);
     const clearPages = useDrillStore((store) => store.clearPages);
-    const { setLabel, setInstrument } = useDrillStore(
-        useShallow((store) => ({
-            setLabel: store.setLabel,
-            setInstrument: store.setInstrument,
-        })),
-    );
 
     return (
         <div className="py-10 md:container md:mx-auto px-4">
@@ -77,19 +68,6 @@ export default function Page() {
                 >
                     Add Page
                 </Button>
-                <SelectInstrumentDialog
-                    trigger={
-                        <Button className="ml-2 bg-blue-600">
-                            Select Instrument
-                        </Button>
-                    }
-                    onSelect={(label) => {
-                        clearPages();
-                        dotData2025[label].dots.forEach((dot) => addPage(dot));
-                        setLabel(dotData2025[label].label);
-                        setInstrument(dotData2025[label].performer);
-                    }}
-                />
                 <Button
                     className="ml-2"
                     variant="destructive"

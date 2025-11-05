@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowLeft, Eye, Music } from 'lucide-react';
 import Link from 'next/link';
 import { ViewsSettings } from './views.config';
+import { InstrumentSettings } from './instrument.config';
 
 export default function Page() {
     return (
@@ -39,10 +40,7 @@ export default function Page() {
                 </TabsList>
                 <div className="p-6 h-full overflow-y-auto">
                     <TabsContent value="general" className="mt-0">
-                        <h2 className="text-2xl font-semibold mb-4">
-                            Instrument
-                        </h2>
-                        <p>Instrument settings content here.</p>
+                        <InstrumentSettings />
                     </TabsContent>
                     <TabsContent value="views" className="mt-0">
                         <ViewsSettings />
