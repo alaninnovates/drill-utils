@@ -31,17 +31,10 @@ export const AllSetsDialog = ({
                 <VisuallyHidden>
                     <DialogTitle>All Sets</DialogTitle>
                 </VisuallyHidden>
-                <div className="mb-4">
-                    <Link href="/dots">
-                        <Button variant="link">
-                            <ArrowLeft />
-                            Configure Dots
-                        </Button>
-                    </Link>
-                </div>
                 <Table>
                     <TableHeader>
                         <TableRow>
+                            <TableHead className="w-12">Movement</TableHead>
                             <TableHead className="w-24">Set</TableHead>
                             <TableHead className="w-24">Counts</TableHead>
                             <TableHead>Side to Side</TableHead>
@@ -64,6 +57,9 @@ export const AllSetsDialog = ({
                                     cursor: onSetSelect ? 'pointer' : 'default',
                                 }}
                             >
+                                <TableCell className="font-medium">
+                                    {page.movement}
+                                </TableCell>
                                 <TableCell className="font-medium">
                                     {page.set}
                                 </TableCell>

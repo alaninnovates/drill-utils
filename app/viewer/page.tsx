@@ -14,6 +14,7 @@ import { ArrowLeft, ArrowRight, NotebookPen, Pause, Play } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { NotesDialog } from './notes.dialog';
+import { AllSetsDialog } from './all-sets.dialog';
 
 export default function Page() {
     const pages = useDrillStore((store) => store.pages);
@@ -150,22 +151,31 @@ export default function Page() {
                         <p className="text-sm md:text-base text-white">-</p>
                     )}
                 </div>
-                <div>
-                    <p className="text-sm md:text-base text-white">
-                        Side {pages[dotStep].side}:{' '}
-                        {pages[dotStep].sideToSide.stepOffset}{' '}
-                        {pages[dotStep].sideToSide.stepOffsetDirection}{' '}
-                        {pages[dotStep].sideToSide.yardline} yd ln
-                    </p>
-                    <p className="text-sm md:text-base text-white">
-                        {pages[dotStep].frontToBack.stepOffset}{' '}
-                        {pages[dotStep].frontToBack.stepOffsetDirection}{' '}
-                        {pages[dotStep].frontToBack.line}
-                    </p>
-                    <p className="text-sm md:text-base text-white">
-                        {isHold ? 'Hold' : 'Move'}: {pages[dotStep].counts}
-                    </p>
-                </div>
+                <AllSetsDialog
+                    trigger={
+                        <div>
+                            <p className="text-sm md:text-base text-white">
+                                Side {pages[dotStep].side}:{' '}
+                                {pages[dotStep].sideToSide.stepOffset}{' '}
+                                {pages[dotStep].sideToSide.stepOffsetDirection}{' '}
+                                {pages[dotStep].sideToSide.yardline} yd ln
+                            </p>
+                            <p className="text-sm md:text-base text-white">
+                                {pages[dotStep].frontToBack.stepOffset}{' '}
+                                {pages[dotStep].frontToBack.stepOffsetDirection}{' '}
+                                {pages[dotStep].frontToBack.line}
+                            </p>
+                            <p className="text-sm md:text-base text-white">
+                                {isHold ? 'Hold' : 'Move'}:{' '}
+                                {pages[dotStep].counts}
+                            </p>
+                        </div>
+                    }
+                    currentIndex={dotStep}
+                    onSetSelect={(index) => {
+                        setDotStep(index);
+                    }}
+                />
             </div>
             <div className="absolute top-1/2 right-4 transform -translate-y-1/2 flex flex-col gap-2 bg-white/20 backdrop-blur-sm p-2 rounded-md">
                 <NotesDialog
@@ -176,24 +186,6 @@ export default function Page() {
                     }
                     setName={pages[dotStep].set}
                 />
-                {/* <AllSetsDialog
-                    trigger={
-                        <Button>
-                            <RectangleEllipsis className="h-4 w-4" />
-                        </Button>
-                    }
-                    currentIndex={dotStep}
-                    onSetSelect={(index) => {
-                        setDotStep(index);
-                    }}
-                />
-                <ViewsDialog
-                    trigger={
-                        <Button>
-                            <Eye className="h-4 w-4" />
-                        </Button>
-                    }
-                /> */}
                 <Button
                     onClick={() => {
                         if (isPlaying) {
