@@ -9,7 +9,7 @@ import { InstrumentSettings } from './instrument.config';
 export default function Page() {
     return (
         <div className="h-screen flex flex-col p-safe">
-            <div className="border-b p-4">
+            <div className="border-b p-2">
                 <Link href="/">
                     <Button variant="ghost">
                         <ArrowLeft />
@@ -20,7 +20,7 @@ export default function Page() {
             <Tabs
                 defaultValue="general"
                 orientation="vertical"
-                className="grid grid-cols-[30%_70%] h-full"
+                className="grid grid-cols-[30%_70%] flex-grow"
             >
                 <TabsList className="flex flex-col w-full h-fit bg-muted/50 p-2 gap-2">
                     <TabsTrigger
@@ -38,7 +38,7 @@ export default function Page() {
                         Views
                     </TabsTrigger>
                 </TabsList>
-                <div className="p-6 h-full overflow-y-auto">
+                <div className="overflow-y-auto">
                     <TabsContent value="general" className="mt-0">
                         <InstrumentSettings />
                     </TabsContent>

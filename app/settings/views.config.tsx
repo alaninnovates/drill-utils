@@ -153,6 +153,9 @@ const ModifyView = ({
                             <label className="font-medium">
                                 Minus Quantity
                             </label>
+                            <p className="text-sm text-gray-600">
+                                How many sets to show before your current set.
+                            </p>
                             <Input
                                 type="number"
                                 value={view.minusQuantity}
@@ -167,6 +170,9 @@ const ModifyView = ({
                         </div>
                         <div className="flex flex-col gap-2">
                             <label className="font-medium">Plus Quantity</label>
+                            <p className="text-sm text-gray-600">
+                                How many sets to show after your current set.
+                            </p>
                             <Input
                                 type="number"
                                 value={view.plusQuantity}
@@ -193,7 +199,7 @@ export const ViewsSettings = () => {
     const addView = useDrillStore((store) => store.addView);
 
     return (
-        <div>
+        <div className="p-4 h-full">
             <div className="flex items-center gap-4 flex-row">
                 {currentModifyingView && (
                     <Button
@@ -203,7 +209,7 @@ export const ViewsSettings = () => {
                         <ArrowLeft className="w-4 h-4" />
                     </Button>
                 )}
-                <h2 className="text-2xl font-semibold mb-4">
+                <h2 className="text-lg font-semibold">
                     Views
                     {currentModifyingView && ` - ${currentModifyingView}`}
                 </h2>

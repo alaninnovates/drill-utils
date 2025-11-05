@@ -7,8 +7,9 @@ import Link from 'next/link';
 import { useShallow } from 'zustand/shallow';
 
 export default function Page() {
-    const { label } = useDrillStore(
+    const { instrument, label } = useDrillStore(
         useShallow((store) => ({
+            instrument: store.instrument,
             label: store.label,
         })),
     );
@@ -16,7 +17,10 @@ export default function Page() {
         <div className="flex flex-col sm:flex-row items-center justify-between h-screen">
             <LogoutButton />
             <div className="flex-1 flex items-center justify-center flex-col gap-4">
-                <h1 className="text-4xl font-bold">Welcome, {label}</h1>
+                <h1 className="text-4xl font-bold text-center">
+                    Welcome,
+                    <br /> {instrument} {label}
+                </h1>
                 <p>Los Altos High School</p>
             </div>
             <div className="flex-1 flex flex-col h-full w-full items-center justify-center gap-4 m-8">
