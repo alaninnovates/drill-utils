@@ -1,5 +1,5 @@
 import { Circle, Text, useTransformContext } from 'mafs';
-import { dotData2025, dotData2025MV2, dotData2025MV3 } from '../dot/data';
+import { dotData2025 } from '../dot/data';
 import { instrumentToColor } from '../dot/color';
 import { dotToFieldCoordinate } from '../dot/parser';
 import React from 'react';
@@ -8,7 +8,7 @@ import { useColorScheme } from '../hooks/useColorScheme';
 
 export const OtherPerformers = ({ currentIndex }: { currentIndex: number }) => {
     const { viewTransform } = useTransformContext();
-    const { views, currentView, movement } = useDrillStore((state) => state);
+    const { views, currentView } = useDrillStore((state) => state);
     const { isDarkMode } = useColorScheme();
 
     const activeView = currentView ? views[currentView] : null;
@@ -17,13 +17,7 @@ export const OtherPerformers = ({ currentIndex }: { currentIndex: number }) => {
 
     return (
         <>
-            {Object.values(
-                movement === 1
-                    ? dotData2025
-                    : movement === 2
-                    ? dotData2025MV2
-                    : dotData2025MV3,
-            ).map(({ id, performer, label, dots }) => {
+            {Object.values(dotData2025).map(({ performer, label, dots }) => {
                 if (dots[currentIndex] == null) {
                     console.log(
                         `No dot for performer ${performer} ${label} at index ${currentIndex}`,
@@ -38,9 +32,9 @@ export const OtherPerformers = ({ currentIndex }: { currentIndex: number }) => {
                 }
                 const coord = dotToFieldCoordinate(dots[currentIndex]);
                 return (
-                    <React.Fragment key={id}>
+                    <React.Fragment key={label}>
                         <Circle
-                            key={id}
+                            key={label}
                             center={[coord.x, coord.y]}
                             radius={
                                 1 /
@@ -50,7 +44,7 @@ export const OtherPerformers = ({ currentIndex }: { currentIndex: number }) => {
                             fillOpacity={1}
                         />
                         <Text
-                            key={`text-${id}`}
+                            key={`text-${label}`}
                             x={coord.x}
                             y={coord.y}
                             color={isDarkMode ? 'white' : 'black'}

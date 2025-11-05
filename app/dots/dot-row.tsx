@@ -52,6 +52,17 @@ export const DotRow = ({ index }: { index: number }) => {
         <TableRow key={index}>
             <TableCell className="font-medium">
                 <Input
+                    value={page.movement}
+                    onChange={(e) =>
+                        updateDot(index, {
+                            movement: Number(e.target.value),
+                        })
+                    }
+                    className="w-12"
+                />
+            </TableCell>
+            <TableCell className="font-medium">
+                <Input
                     value={page.set}
                     onChange={(e) =>
                         updateDot(index, {

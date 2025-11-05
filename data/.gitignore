@@ -1,4 +1,2 @@
-mv1-raw.csv
-mv1.json
-mv2-raw.csv
-mv2.json
+*.csv
+*.json

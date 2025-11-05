@@ -83,7 +83,7 @@ export const calculateMidset = (
 
 export const fieldCoordinateToDot = (
     coord: [number, number],
-): Omit<DotbookEntry, 'set' | 'counts'> => {
+): Omit<DotbookEntry, 'set' | 'counts' | 'movement'> => {
     const [x, y] = coord;
 
     let side: 1 | 2;

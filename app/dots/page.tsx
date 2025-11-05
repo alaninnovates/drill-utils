@@ -12,19 +12,18 @@ import { Button } from '@/components/ui/button';
 import { SelectInstrumentDialog } from './select-instrument.dialog';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { dotData2025 } from '@/lib/dot/data';
 import { DotRow } from './dot-row';
 import { useShallow } from 'zustand/shallow';
+import { dotData2025 } from '@/lib/dot/data';
 
 export default function Page() {
     const pageLength = useDrillStore((store) => store.pages.length);
     const addPage = useDrillStore((store) => store.addPage);
     const clearPages = useDrillStore((store) => store.clearPages);
-    const { setLabel, setInstrument, setMovement } = useDrillStore(
+    const { setLabel, setInstrument } = useDrillStore(
         useShallow((store) => ({
             setLabel: store.setLabel,
             setInstrument: store.setInstrument,
-            setMovement: store.setMovement,
         })),
     );
 
@@ -41,6 +40,7 @@ export default function Page() {
             <Table>
                 <TableHeader>
                     <TableRow>
+                        <TableHead className="w-12">Movement</TableHead>
                         <TableHead className="w-24">Set</TableHead>
                         <TableHead className="w-24">Counts</TableHead>
                         <TableHead className="w-24">Side</TableHead>
@@ -58,6 +58,7 @@ export default function Page() {
                 <Button
                     onClick={() => {
                         addPage({
+                            movement: 1,
                             set: '',
                             counts: 4,
                             side: 1,
@@ -82,13 +83,11 @@ export default function Page() {
                             Select Instrument
                         </Button>
                     }
-                    onSelect={(data, instrument, movement) => {
+                    onSelect={(label) => {
                         clearPages();
-                        console.log(data, instrument);
-                        data[instrument].dots.forEach((dot) => addPage(dot));
-                        setLabel(data[instrument].label);
-                        setInstrument(data[instrument].performer);
-                        setMovement(movement);
+                        dotData2025[label].dots.forEach((dot) => addPage(dot));
+                        setLabel(dotData2025[label].label);
+                        setInstrument(dotData2025[label].performer);
                     }}
                 />
                 <Button

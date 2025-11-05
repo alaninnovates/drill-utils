@@ -116,6 +116,8 @@ export default function Page() {
                     </Link>
                 </div>
                 <p className="text-md md:text-lg text-white mr-2">
+                    Movement {pages[dotStep].movement}
+                    <br />
                     Set {pages[dotStep].set}
                 </p>
                 <div>

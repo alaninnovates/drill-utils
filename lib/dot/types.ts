@@ -5,6 +5,7 @@ export type FrontBack =
     | 'Back Side Line';
 
 export type DotbookEntry = {
+    movement: number;
     set: string;
     counts: number;
     side: number;
