@@ -4,7 +4,7 @@ import { dotData2025 } from '@/lib/dot/data';
 import { useDrillStore } from '@/lib/state/drill-store-provider';
 import { useShallow } from 'zustand/shallow';
 
-export const InstrumentSettings = () => {
+export const InstrumentSettings = ({ onSelect = () => {} }) => {
     const addPage = useDrillStore((store) => store.addPage);
     const clearPages = useDrillStore((store) => store.clearPages);
     const { setLabel, setInstrument, instrument, label } = useDrillStore(
@@ -37,6 +37,7 @@ export const InstrumentSettings = () => {
                                 );
                                 setLabel(dotData2025[label].label);
                                 setInstrument(dotData2025[label].performer);
+                                onSelect();
                             }}
                             style={{
                                 backgroundColor: instrumentToColor(performer),

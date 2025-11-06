@@ -4,15 +4,25 @@ import { Button } from '@/components/ui/button';
 import { useDrillStore } from '@/lib/state/drill-store-provider';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { useEffect } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 export default function Page() {
+    const hasHydrated = useDrillStore((state) => state._hasHydrated);
     const { instrument, label } = useDrillStore(
         useShallow((store) => ({
             instrument: store.instrument,
             label: store.label,
         })),
     );
+
+    useEffect(() => {
+        if (hasHydrated && !instrument) {
+            redirect('/onboarding');
+        }
+    }, [hasHydrated]);
+
     return (
         <div className="flex flex-col sm:flex-row items-center justify-between h-screen">
             <LogoutButton />

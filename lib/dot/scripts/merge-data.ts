@@ -30,7 +30,7 @@ for (const [movement, dotData] of Object.entries(movementMap)) {
             };
         }
         mergedDotData2025[key].dots.push(
-            // @ts-ignore
+            // @ts-expect-error dot schema is different, now includes movement
             ...entry.dots.map((dot) => ({
                 ...dot,
                 movement: Number(movement),

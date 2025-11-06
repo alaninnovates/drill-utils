@@ -10,6 +10,7 @@ export interface ViewData {
 }
 
 export type DrillState = {
+    _hasHydrated: boolean;
     pages: DotbookEntry[];
     label: string;
     instrument: string;
@@ -31,12 +32,14 @@ export type DrillActions = {
     setCurrentView: (name: string) => void;
     deleteView: (name: string) => void;
     addView: () => void;
+    setHasHydrated: (state: boolean) => void;
 };
 
 export type DrillStore = DrillState & DrillActions;
 
 export const initDrillStore = (): DrillState => {
     return {
+        _hasHydrated: false,
         pages: [],
         label: '',
         instrument: '',
@@ -53,6 +56,7 @@ export const initDrillStore = (): DrillState => {
 };
 
 export const defaultInitState: DrillState = {
+    _hasHydrated: false,
     pages: [],
     label: '',
     instrument: '',
@@ -144,10 +148,28 @@ export const createDrillStore = (initState: DrillState = defaultInitState) => {
                             },
                         };
                     }),
+
+                _hasHydrated: false,
+                setHasHydrated: (state) => {
+                    set({
+                        _hasHydrated: state,
+                    });
+                },
             }),
             {
                 name: 'drill-storage',
                 storage: createJSONStorage(() => localStorage),
+                version: 2,
+                migrate: (state, version) => {
+                    console.log('migrating', version, state);
+                    if (version === 1) {
+                        return defaultInitState;
+                    }
+                    return state;
+                },
+                onRehydrateStorage: (state) => {
+                    return () => state.setHasHydrated(true);
+                },
             },
         ),
     );
