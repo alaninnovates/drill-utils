@@ -14,6 +14,14 @@ export function middleware(request: NextRequest) {
     if (authCookie?.value === 'true') {
         return NextResponse.next();
     }
+
+    const password = request.nextUrl.searchParams.get('password');
+    if (password) {
+        const loginUrl = new URL('/login', request.url);
+        loginUrl.searchParams.set('password', password);
+        return NextResponse.redirect(loginUrl);
+    }
+
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);
     return NextResponse.redirect(loginUrl);

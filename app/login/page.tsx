@@ -13,6 +13,25 @@ function LoginForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const redirect = searchParams.get('redirect') || '/';
+    const paramPassword = searchParams.get('password') || '';
+
+    if (paramPassword) {
+        (async () => {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ password: paramPassword }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                router.push(redirect);
+            }
+        })();
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
