@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { useMemo, useState, useRef, useCallback } from 'react';
 import { NotesDialog } from './notes.dialog';
 import { AllSetsDialog } from './all-sets.dialog';
+import { tempoMap } from '@/lib/dot/tempos';
 
 export default function Page() {
     const pages = useDrillStore((store) => store.pages);
@@ -35,7 +36,9 @@ export default function Page() {
             if (startTimeRef.current === null) startTimeRef.current = timestamp;
             const elapsed = timestamp - startTimeRef.current;
 
-            const durationPerCount = 500; // assume ~120bpm
+            const currentDot = pages[currentAnimationStepRef.current];
+            const tempo = tempoMap[currentDot.movement][currentDot.set];
+            const durationPerCount = 60000 / tempo;
             const totalDuration =
                 currentAnimationStepRef.current < dotsLength - 1
                     ? pages[currentAnimationStepRef.current + 1].counts *
