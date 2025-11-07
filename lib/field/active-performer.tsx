@@ -4,6 +4,7 @@ import { calculateMidset, dotToFieldCoordinate } from '../dot/parser';
 import { useDrillStore } from '../state/drill-store-provider';
 import { DotbookEntry } from '../dot/types';
 import { useColorScheme } from '../hooks/useColorScheme';
+import { interpolatePosition } from '../utils';
 
 const CurrentPageDisplay = ({
     coord,
@@ -96,9 +97,11 @@ const AdditionalPagesDisplay = ({
 
 export const ActivePerformer = ({
     currentIndex,
+    animationProgress,
     label,
 }: {
     currentIndex: number;
+    animationProgress: number;
     label: string;
 }) => {
     const { viewTransform } = useTransformContext();
@@ -136,7 +139,15 @@ export const ActivePerformer = ({
                 direction={1}
             />
             <CurrentPageDisplay
-                coord={dotToFieldCoordinate(pages[currentIndex])}
+                coord={
+                    pages[currentIndex + 1] && animationProgress > 0
+                        ? interpolatePosition(
+                              dotToFieldCoordinate(pages[currentIndex]),
+                              dotToFieldCoordinate(pages[currentIndex + 1]),
+                              animationProgress,
+                          )
+                        : dotToFieldCoordinate(pages[currentIndex])
+                }
                 label={label}
                 viewTransform={viewTransform}
             />

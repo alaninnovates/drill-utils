@@ -5,8 +5,15 @@ import { dotToFieldCoordinate } from '../dot/parser';
 import React from 'react';
 import { useDrillStore } from '../state/drill-store-provider';
 import { useColorScheme } from '../hooks/useColorScheme';
+import { interpolatePosition } from '../utils';
 
-export const OtherPerformers = ({ currentIndex }: { currentIndex: number }) => {
+export const OtherPerformers = ({
+    currentIndex,
+    animationProgress,
+}: {
+    currentIndex: number;
+    animationProgress: number;
+}) => {
     const { viewTransform } = useTransformContext();
     const { views, currentView } = useDrillStore((state) => state);
     const { isDarkMode } = useColorScheme();
@@ -30,7 +37,19 @@ export const OtherPerformers = ({ currentIndex }: { currentIndex: number }) => {
                 ) {
                     return null;
                 }
-                const coord = dotToFieldCoordinate(dots[currentIndex]);
+
+                let coord = dotToFieldCoordinate(dots[currentIndex]);
+                if (animationProgress > 0 && dots[currentIndex + 1] != null) {
+                    const nextCoord = dotToFieldCoordinate(
+                        dots[currentIndex + 1],
+                    );
+                    coord = interpolatePosition(
+                        coord,
+                        nextCoord,
+                        animationProgress,
+                    );
+                }
+
                 return (
                     <React.Fragment key={label}>
                         <Circle

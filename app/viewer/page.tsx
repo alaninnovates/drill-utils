@@ -12,7 +12,7 @@ import { MarchingField } from '@/lib/field/marching-field';
 import { useDrillStore } from '@/lib/state/drill-store-provider';
 import { ArrowLeft, ArrowRight, NotebookPen, Pause, Play } from 'lucide-react';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef, useCallback } from 'react';
 import { NotesDialog } from './notes.dialog';
 import { AllSetsDialog } from './all-sets.dialog';
 
@@ -21,8 +21,61 @@ export default function Page() {
     const dotsLength = pages.length;
     const [dotStep, setDotStep] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [intervalCache, setIntervalCache] = useState<NodeJS.Timeout | null>(
-        null,
+    const [animationProgress, setAnimationProgress] = useState(0);
+    const animationFrameRef = useRef<number | null>(null);
+    const startTimeRef = useRef<number | null>(null);
+    const currentAnimationStepRef = useRef(dotStep);
+
+    useMemo(() => {
+        currentAnimationStepRef.current = dotStep;
+    }, [dotStep]);
+
+    const animate = useCallback(
+        (timestamp: number) => {
+            if (startTimeRef.current === null) startTimeRef.current = timestamp;
+            const elapsed = timestamp - startTimeRef.current;
+
+            const durationPerCount = 500; // assume ~120bpm
+            const totalDuration =
+                currentAnimationStepRef.current < dotsLength - 1
+                    ? pages[currentAnimationStepRef.current + 1].counts *
+                      durationPerCount
+                    : 0;
+
+            if (totalDuration > 0) {
+                const progress = Math.min(elapsed / totalDuration, 1);
+                setAnimationProgress(progress);
+
+                if (progress >= 1) {
+                    const nextStep = currentAnimationStepRef.current + 1;
+                    if (nextStep >= dotsLength) {
+                        setIsPlaying(false);
+                        setAnimationProgress(0);
+                        animationFrameRef.current = null;
+                        startTimeRef.current = null;
+                        return;
+                    }
+                    setDotStep(nextStep);
+                    setAnimationProgress(0);
+                    startTimeRef.current = null;
+                }
+            } else {
+                const nextStep = currentAnimationStepRef.current + 1;
+                if (nextStep >= dotsLength) {
+                    setIsPlaying(false);
+                    setAnimationProgress(0);
+                    animationFrameRef.current = null;
+                    startTimeRef.current = null;
+                    return;
+                }
+                setDotStep(nextStep);
+                setAnimationProgress(0);
+                startTimeRef.current = null;
+            }
+
+            animationFrameRef.current = requestAnimationFrame(animate);
+        },
+        [isPlaying, dotsLength, pages],
     );
 
     const isHold = useMemo(() => {
@@ -82,7 +135,10 @@ export default function Page() {
 
     return (
         <div style={{ height: '100vh' }}>
-            <MarchingField currentIndex={dotStep} />
+            <MarchingField
+                currentIndex={dotStep}
+                animationProgress={animationProgress}
+            />
             <div className="absolute bottom-4 right-4 flex gap-2">
                 <Button
                     onClick={() => {
@@ -189,26 +245,18 @@ export default function Page() {
                 <Button
                     onClick={() => {
                         if (isPlaying) {
-                            if (intervalCache) {
-                                clearInterval(intervalCache);
+                            if (animationFrameRef.current) {
+                                cancelAnimationFrame(animationFrameRef.current);
+                                animationFrameRef.current = null;
                             }
-                            setIntervalCache(null);
                             setIsPlaying(false);
+                            setAnimationProgress(0);
+                            startTimeRef.current = null;
                             return;
                         }
                         setIsPlaying(true);
-                        const interval = setInterval(() => {
-                            setDotStep((prev) => {
-                                if (prev >= dotsLength - 1) {
-                                    clearInterval(interval);
-                                    setIsPlaying(false);
-                                    return prev;
-                                }
-                                const newStep = prev + 1;
-                                return newStep;
-                            });
-                        }, 500);
-                        setIntervalCache(interval);
+                        animationFrameRef.current =
+                            requestAnimationFrame(animate);
                     }}
                     className="text-white rounded"
                 >

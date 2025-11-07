@@ -11,7 +11,13 @@ import { useDrillStore } from '../state/drill-store-provider';
 import { ActivePerformer } from './active-performer';
 import { useColorScheme } from '../hooks/useColorScheme';
 
-export const MarchingField = ({ currentIndex }: { currentIndex: number }) => {
+export const MarchingField = ({
+    currentIndex,
+    animationProgress,
+}: {
+    currentIndex: number;
+    animationProgress: number;
+}) => {
     const { label } = useDrillStore((store) => store);
     const { isDarkMode } = useColorScheme();
 
@@ -19,6 +25,7 @@ export const MarchingField = ({ currentIndex }: { currentIndex: number }) => {
     useEffect(() => {
         setClientHeight(document.documentElement.clientHeight);
     }, []);
+
     return (
         <Mafs
             viewBox={{ x: [0, FIELD_LENGTH], y: [0, FIELD_WIDTH] }}
@@ -50,8 +57,15 @@ export const MarchingField = ({ currentIndex }: { currentIndex: number }) => {
     `}</style>
             <FieldContainer />
             <FieldGridLines />
-            <OtherPerformers currentIndex={currentIndex} />
-            <ActivePerformer currentIndex={currentIndex} label={label} />
+            <OtherPerformers
+                currentIndex={currentIndex}
+                animationProgress={animationProgress}
+            />
+            <ActivePerformer
+                currentIndex={currentIndex}
+                animationProgress={animationProgress}
+                label={label}
+            />
 
             {/* field outline */}
             <Line.Segment
