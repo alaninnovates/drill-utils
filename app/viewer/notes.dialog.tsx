@@ -15,7 +15,7 @@ export const NotesDialog = ({
     trigger: React.ReactNode;
     setName: string;
 }) => {
-    const { modifyNote, pages } = useDrillStore((store) => store);
+    const { modifyNote, notes } = useDrillStore((store) => store);
     return (
         <Dialog>
             <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -26,9 +26,7 @@ export const NotesDialog = ({
                 <Textarea
                     className="w-full"
                     rows={5}
-                    defaultValue={
-                        pages.find((p) => p.set === setName)?.note || ''
-                    }
+                    defaultValue={notes[setName] ? notes[setName] : ''}
                     onChange={(e) => modifyNote(setName, e.target.value)}
                 />
             </DialogContent>

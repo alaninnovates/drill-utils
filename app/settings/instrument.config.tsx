@@ -5,8 +5,6 @@ import { useDrillStore } from '@/lib/state/drill-store-provider';
 import { useShallow } from 'zustand/shallow';
 
 export const InstrumentSettings = ({ onSelect = () => {} }) => {
-    const addPage = useDrillStore((store) => store.addPage);
-    const clearPages = useDrillStore((store) => store.clearPages);
     const { setLabel, setInstrument, instrument, label } = useDrillStore(
         useShallow((store) => ({
             instrument: store.instrument,
@@ -31,10 +29,6 @@ export const InstrumentSettings = ({ onSelect = () => {} }) => {
                         <Button
                             key={label}
                             onClick={() => {
-                                clearPages();
-                                dotData2025[label].dots.forEach((dot) =>
-                                    addPage(dot),
-                                );
                                 setLabel(dotData2025[label].label);
                                 setInstrument(dotData2025[label].performer);
                                 onSelect();

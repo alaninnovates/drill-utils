@@ -10,15 +10,16 @@ import { useShallow } from 'zustand/shallow';
 
 export default function Page() {
     const hasHydrated = useDrillStore((state) => state._hasHydrated);
-    const { instrument, label } = useDrillStore(
+    const { instrument, label, directorMode } = useDrillStore(
         useShallow((store) => ({
             instrument: store.instrument,
             label: store.label,
+            directorMode: store.directorMode,
         })),
     );
 
     useEffect(() => {
-        if (hasHydrated && !instrument) {
+        if (hasHydrated && !instrument && !directorMode) {
             redirect('/onboarding');
         }
     }, [hasHydrated]);
@@ -29,7 +30,8 @@ export default function Page() {
             <div className="flex-1 flex items-center justify-center flex-col gap-4">
                 <h1 className="text-4xl font-bold text-center">
                     Welcome,
-                    <br /> {instrument} {label}
+                    <br />
+                    {directorMode ? 'Director' : `${instrument} ${label}`}
                 </h1>
                 <p>Los Altos High School</p>
             </div>
@@ -41,11 +43,13 @@ export default function Page() {
                         </Button>
                     </Link>
                     <div className="w-full flex gap-4 flex-1">
-                        <Link href="/dots" className="flex-1">
-                            <Button className="w-full h-full rounded-2xl py-4 text-lg">
-                                Edit dots
-                            </Button>
-                        </Link>
+                        {/* 
+                            <Link href="/dots" className="flex-1">
+                                <Button className="w-full h-full rounded-2xl py-4 text-lg">
+                                    Edit dots
+                                </Button>
+                            </Link>
+                        */}
                         <Link href="/settings" className="flex-1">
                             <Button className="w-full h-full rounded-2xl py-4 text-lg">
                                 Settings

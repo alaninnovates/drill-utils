@@ -16,9 +16,11 @@ import { useMemo, useState, useRef, useCallback } from 'react';
 import { NotesDialog } from './notes.dialog';
 import { AllSetsDialog } from './all-sets.dialog';
 import { tempoMap } from '@/lib/dot/tempos';
+import { dotData2025 } from '@/lib/dot/data';
 
 export default function Page() {
-    const pages = useDrillStore((store) => store.pages);
+    const label = useDrillStore((store) => store.label);
+    const pages = dotData2025[label].dots;
     const dotsLength = pages.length;
     const [dotStep, setDotStep] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);

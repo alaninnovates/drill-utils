@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line, Point, Text, useTransformContext, vec } from 'mafs';
+import { Line, Text, useTransformContext } from 'mafs';
 import {
     FIELD_LENGTH,
     END_ZONE,
@@ -134,7 +134,7 @@ export const FieldGridLines = () => {
                             <Text
                                 x={-x}
                                 y={-(FIELD_WIDTH - 11.2 * (5 / 8))}
-                                size={19.5 * viewTransform['0'] * 0.148}
+                                size={19 * viewTransform['0'] * 0.148}
                                 color={isDarkMode ? 'white' : 'gray'}
                                 attach="n"
                                 svgTextProps={{ transform: 'scale(-1,-1)' }}

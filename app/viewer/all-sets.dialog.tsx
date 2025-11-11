@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import { dotData2025 } from '@/lib/dot/data';
 
 export const AllSetsDialog = ({
     trigger,
@@ -23,7 +24,8 @@ export const AllSetsDialog = ({
     currentIndex: number;
     onSetSelect?: (index: number) => void;
 }) => {
-    const { pages } = useDrillStore((store) => store);
+    const { label } = useDrillStore((store) => store);
+    const pages = dotData2025[label].dots;
     return (
         <Dialog>
             <DialogTrigger asChild>{trigger}</DialogTrigger>

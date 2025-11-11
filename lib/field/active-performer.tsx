@@ -5,6 +5,7 @@ import { useDrillStore } from '../state/drill-store-provider';
 import { DotbookEntry } from '../dot/types';
 import { useColorScheme } from '../hooks/useColorScheme';
 import { interpolatePosition } from '../utils';
+import { dotData2025 } from '../dot/data';
 
 const CurrentPageDisplay = ({
     coord,
@@ -106,7 +107,8 @@ export const ActivePerformer = ({
 }) => {
     const { viewTransform } = useTransformContext();
 
-    const { pages, views, currentView } = useDrillStore((state) => state);
+    const { views, currentView } = useDrillStore((state) => state);
+    const pages = dotData2025[label].dots;
     const activeView = currentView ? views[currentView] : null;
     const minusDots = activeView?.minusQuantity
         ? pages.slice(
