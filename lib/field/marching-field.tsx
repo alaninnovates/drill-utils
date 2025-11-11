@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Line, Mafs } from 'mafs';
+import { Line, Mafs, Transform } from 'mafs';
 import 'mafs/core.css';
 
 import { FIELD_LENGTH, FIELD_WIDTH } from './field-constants';
@@ -23,6 +23,7 @@ export const MarchingField = ({
     setLabelOfInterest: (label: string) => void;
 }) => {
     const { isDarkMode } = useColorScheme();
+    const { directorMode } = useDrillStore((state) => state);
 
     const [clientHeight, setClientHeight] = useState(0);
     useEffect(() => {
@@ -58,46 +59,48 @@ export const MarchingField = ({
         --mafs-pink: light-dark(#ee00ab, #ff7bde);
     }
     `}</style>
-            <FieldContainer setLabelOfInterest={setLabelOfInterest} />
-            <FieldGridLines />
-            <OtherPerformers
-                currentIndex={currentIndex}
-                animationProgress={animationProgress}
-                setLabelOfInterest={setLabelOfInterest}
-            />
-            {labelOfInterest && (
-                <ActivePerformer
+            <Transform rotate={directorMode ? Math.PI : 0}>
+                <FieldContainer setLabelOfInterest={setLabelOfInterest} />
+                <FieldGridLines />
+                <OtherPerformers
                     currentIndex={currentIndex}
                     animationProgress={animationProgress}
-                    label={labelOfInterest}
+                    setLabelOfInterest={setLabelOfInterest}
                 />
-            )}
+                {labelOfInterest && (
+                    <ActivePerformer
+                        currentIndex={currentIndex}
+                        animationProgress={animationProgress}
+                        label={labelOfInterest}
+                    />
+                )}
 
-            {/* field outline */}
-            <Line.Segment
-                point1={[0, 0]}
-                point2={[FIELD_LENGTH, 0]}
-                color={isDarkMode ? 'white' : 'black'}
-                weight={3}
-            />
-            <Line.Segment
-                point1={[0, FIELD_WIDTH]}
-                point2={[FIELD_LENGTH, FIELD_WIDTH]}
-                color={isDarkMode ? 'white' : 'black'}
-                weight={3}
-            />
-            <Line.Segment
-                point1={[0, 0]}
-                point2={[0, FIELD_WIDTH]}
-                color={isDarkMode ? 'white' : 'black'}
-                weight={3}
-            />
-            <Line.Segment
-                point1={[FIELD_LENGTH, 0]}
-                point2={[FIELD_LENGTH, FIELD_WIDTH]}
-                color={isDarkMode ? 'white' : 'black'}
-                weight={3}
-            />
+                {/* field outline */}
+                <Line.Segment
+                    point1={[0, 0]}
+                    point2={[FIELD_LENGTH, 0]}
+                    color={isDarkMode ? 'white' : 'black'}
+                    weight={3}
+                />
+                <Line.Segment
+                    point1={[0, FIELD_WIDTH]}
+                    point2={[FIELD_LENGTH, FIELD_WIDTH]}
+                    color={isDarkMode ? 'white' : 'black'}
+                    weight={3}
+                />
+                <Line.Segment
+                    point1={[0, 0]}
+                    point2={[0, FIELD_WIDTH]}
+                    color={isDarkMode ? 'white' : 'black'}
+                    weight={3}
+                />
+                <Line.Segment
+                    point1={[FIELD_LENGTH, 0]}
+                    point2={[FIELD_LENGTH, FIELD_WIDTH]}
+                    color={isDarkMode ? 'white' : 'black'}
+                    weight={3}
+                />
+            </Transform>
         </Mafs>
     );
 };

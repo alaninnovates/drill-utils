@@ -8,10 +8,12 @@ import {
     BACK_HASH_Y,
 } from './field-constants';
 import { useColorScheme } from '../hooks/useColorScheme';
+import { useDrillStore } from '../state/drill-store-provider';
 
 export const FieldGridLines = () => {
     const { viewTransform } = useTransformContext();
     const { isDarkMode } = useColorScheme();
+    const { directorMode } = useDrillStore((state) => state);
 
     const showOneYardGrid = viewTransform['0'] > 14;
 
@@ -124,7 +126,11 @@ export const FieldGridLines = () => {
                         <React.Fragment key={`num-${x}`}>
                             <Text
                                 x={x}
-                                y={11.2 * (5 / 8)}
+                                y={
+                                    directorMode
+                                        ? FIELD_WIDTH - 11.2 * (5 / 8)
+                                        : 11.2 * (5 / 8)
+                                }
                                 size={19.5 * viewTransform['0'] * 0.148}
                                 color={isDarkMode ? 'white' : 'gray'}
                                 attach="n"
@@ -133,11 +139,17 @@ export const FieldGridLines = () => {
                             </Text>
                             <Text
                                 x={-x}
-                                y={-(FIELD_WIDTH - 11.2 * (5 / 8))}
+                                y={
+                                    directorMode
+                                        ? -11.2 * (5 / 8)
+                                        : -(FIELD_WIDTH - 11.2 * (5 / 8))
+                                }
                                 size={19 * viewTransform['0'] * 0.148}
                                 color={isDarkMode ? 'white' : 'gray'}
                                 attach="n"
-                                svgTextProps={{ transform: 'scale(-1,-1)' }}
+                                svgTextProps={{
+                                    transform: 'scale(-1,-1)',
+                                }}
                             >
                                 {mirrored}
                             </Text>
