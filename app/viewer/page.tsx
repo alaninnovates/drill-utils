@@ -18,9 +18,17 @@ import { AllSetsDialog } from './all-sets.dialog';
 import { tempoMap } from '@/lib/dot/tempos';
 import { dotData2025 } from '@/lib/dot/data';
 
+const defaultLabel = Object.keys(dotData2025)[0];
+
 export default function Page() {
     const label = useDrillStore((store) => store.label);
-    const pages = dotData2025[label].dots;
+    const [labelOfInterest, setLabelOfInterest] = useState(label);
+    let pages;
+    if (!labelOfInterest) {
+        pages = dotData2025[defaultLabel].dots;
+    } else {
+        pages = dotData2025[labelOfInterest].dots;
+    }
     const dotsLength = pages.length;
     const [dotStep, setDotStep] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -143,6 +151,8 @@ export default function Page() {
             <MarchingField
                 currentIndex={dotStep}
                 animationProgress={animationProgress}
+                labelOfInterest={labelOfInterest}
+                setLabelOfInterest={setLabelOfInterest}
             />
             <div className="absolute bottom-4 right-4 flex gap-2">
                 <Button
@@ -168,8 +178,8 @@ export default function Page() {
                     <ArrowRight />
                 </Button>
             </div>
-            <div className="absolute top-0 left-0 px-safe dark:bg-white/20 bg-black/60 backdrop-blur-sm p-2 px-4 flex gap-2 w-full justify-between">
-                <div className="flex items-center gap-2">
+            <div className="absolute top-0 left-0 px-safe dark:bg-white/20 bg-black/60 backdrop-blur-sm py-2 flex gap-2 w-full justify-between">
+                <div className="flex items-center gap-2 pl-2">
                     <Link href="/">
                         <Button>
                             <ArrowLeft />
@@ -182,61 +192,87 @@ export default function Page() {
                     <br />
                     Set {pages[dotStep].set}
                 </p>
-                <div>
-                    <p className="text-sm md:text-base text-white">Step Size</p>
-                    {stepSize !== null ? (
-                        <p className="text-sm md:text-base text-white">
-                            {stepSize} to 5
-                        </p>
-                    ) : (
-                        <p className="text-sm md:text-base text-white">-</p>
-                    )}
-                </div>
-                <div>
-                    <p className="text-sm md:text-base text-white">Midset</p>
-                    {midset !== null ? (
-                        <>
-                            <p className="text-sm md:text-base text-white">
-                                Side {midset.side}:{' '}
-                                {midset.sideToSide.stepOffset}{' '}
-                                {midset.sideToSide.stepOffsetDirection}{' '}
-                                {midset.sideToSide.yardline} yd ln
-                            </p>
-                            <p className="text-sm md:text-base text-white">
-                                {midset.frontToBack.stepOffset}{' '}
-                                {midset.frontToBack.stepOffsetDirection}{' '}
-                                {midset.frontToBack.line}
-                            </p>
-                        </>
-                    ) : (
-                        <p className="text-sm md:text-base text-white">-</p>
-                    )}
-                </div>
-                <AllSetsDialog
-                    trigger={
+                {labelOfInterest ? (
+                    <>
                         <div>
                             <p className="text-sm md:text-base text-white">
-                                Side {pages[dotStep].side}:{' '}
-                                {pages[dotStep].sideToSide.stepOffset}{' '}
-                                {pages[dotStep].sideToSide.stepOffsetDirection}{' '}
-                                {pages[dotStep].sideToSide.yardline} yd ln
+                                Step Size
                             </p>
-                            <p className="text-sm md:text-base text-white">
-                                {pages[dotStep].frontToBack.stepOffset}{' '}
-                                {pages[dotStep].frontToBack.stepOffsetDirection}{' '}
-                                {pages[dotStep].frontToBack.line}
-                            </p>
-                            <p className="text-sm md:text-base text-white">
-                                {isHold ? 'Hold' : 'Move'}:{' '}
-                                {pages[dotStep].counts}
-                            </p>
+                            {stepSize !== null ? (
+                                <p className="text-sm md:text-base text-white">
+                                    {stepSize} to 5
+                                </p>
+                            ) : (
+                                <p className="text-sm md:text-base text-white">
+                                    -
+                                </p>
+                            )}
                         </div>
-                    }
-                    currentIndex={dotStep}
-                    onSetSelect={(index) => {
-                        setDotStep(index);
-                    }}
-                />
+                        <div>
+                            <p className="text-sm md:text-base text-white">
+                                Midset
+                            </p>
+                            {midset !== null ? (
+                                <>
+                                    <p className="text-sm md:text-base text-white">
+                                        Side {midset.side}:{' '}
+                                        {midset.sideToSide.stepOffset}{' '}
+                                        {midset.sideToSide.stepOffsetDirection}{' '}
+                                        {midset.sideToSide.yardline} yd ln
+                                    </p>
+                                    <p className="text-sm md:text-base text-white">
+                                        {midset.frontToBack.stepOffset}{' '}
+                                        {midset.frontToBack.stepOffsetDirection}{' '}
+                                        {midset.frontToBack.line}
+                                    </p>
+                                </>
+                            ) : (
+                                <p className="text-sm md:text-base text-white">
+                                    -
+                                </p>
+                            )}
+                        </div>
+                        <AllSetsDialog
+                            trigger={
+                                <div>
+                                    <p className="text-sm md:text-base text-white">
+                                        Side {pages[dotStep].side}:{' '}
+                                        {pages[dotStep].sideToSide.stepOffset}{' '}
+                                        {
+                                            pages[dotStep].sideToSide
+                                                .stepOffsetDirection
+                                        }{' '}
+                                        {pages[dotStep].sideToSide.yardline} yd
+                                        ln
+                                    </p>
+                                    <p className="text-sm md:text-base text-white">
+                                        {pages[dotStep].frontToBack.stepOffset}{' '}
+                                        {
+                                            pages[dotStep].frontToBack
+                                                .stepOffsetDirection
+                                        }{' '}
+                                        {pages[dotStep].frontToBack.line}
+                                    </p>
+                                    <p className="text-sm md:text-base text-white">
+                                        {isHold ? 'Hold' : 'Move'}:{' '}
+                                        {pages[dotStep].counts}
+                                    </p>
+                                </div>
+                            }
+                            currentIndex={dotStep}
+                            onSetSelect={(index) => {
+                                setDotStep(index);
+                            }}
+                            labelOfInterest={labelOfInterest || defaultLabel}
+                        />
+                    </>
+                ) : (
+                    <div className="flex-1 flex justify-end">
+                        <p className="text-sm md:text-base text-white pr-2">
+                            No performer selected
+                        </p>
+                    </div>
+                )}
             </div>
             <div className="absolute top-1/2 right-4 transform -translate-y-1/2 flex flex-col gap-2 bg-white/20 backdrop-blur-sm p-2 rounded-md">
                 <NotesDialog

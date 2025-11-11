@@ -10,9 +10,11 @@ import { interpolatePosition } from '../utils';
 export const OtherPerformers = ({
     currentIndex,
     animationProgress,
+    setLabelOfInterest,
 }: {
     currentIndex: number;
     animationProgress: number;
+    setLabelOfInterest: (label: string) => void;
 }) => {
     const { viewTransform } = useTransformContext();
     const { views, currentView } = useDrillStore((state) => state);
@@ -61,6 +63,9 @@ export const OtherPerformers = ({
                             }
                             color={instrumentToColor(performer)}
                             fillOpacity={1}
+                            svgEllipseProps={{
+                                onClick: () => setLabelOfInterest(label),
+                            }}
                         />
                         <Text
                             key={`text-${label}`}
@@ -68,6 +73,9 @@ export const OtherPerformers = ({
                             y={coord.y}
                             color={isDarkMode ? 'white' : 'black'}
                             size={viewTransform['0'] * 0.148 * 2}
+                            svgTextProps={{
+                                onClick: () => setLabelOfInterest(label),
+                            }}
                         >
                             {label}
                         </Text>

@@ -14,11 +14,14 @@ import { useColorScheme } from '../hooks/useColorScheme';
 export const MarchingField = ({
     currentIndex,
     animationProgress,
+    labelOfInterest,
+    setLabelOfInterest,
 }: {
     currentIndex: number;
     animationProgress: number;
+    labelOfInterest: string;
+    setLabelOfInterest: (label: string) => void;
 }) => {
-    const { label } = useDrillStore((store) => store);
     const { isDarkMode } = useColorScheme();
 
     const [clientHeight, setClientHeight] = useState(0);
@@ -55,17 +58,20 @@ export const MarchingField = ({
         --mafs-pink: light-dark(#ee00ab, #ff7bde);
     }
     `}</style>
-            <FieldContainer />
+            <FieldContainer setLabelOfInterest={setLabelOfInterest} />
             <FieldGridLines />
             <OtherPerformers
                 currentIndex={currentIndex}
                 animationProgress={animationProgress}
+                setLabelOfInterest={setLabelOfInterest}
             />
-            <ActivePerformer
-                currentIndex={currentIndex}
-                animationProgress={animationProgress}
-                label={label}
-            />
+            {labelOfInterest && (
+                <ActivePerformer
+                    currentIndex={currentIndex}
+                    animationProgress={animationProgress}
+                    label={labelOfInterest}
+                />
+            )}
 
             {/* field outline */}
             <Line.Segment

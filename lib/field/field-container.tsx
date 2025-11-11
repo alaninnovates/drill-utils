@@ -2,9 +2,16 @@ import React from 'react';
 import { Polygon } from 'mafs';
 import { FIELD_LENGTH, END_ZONE, FIELD_WIDTH } from './field-constants';
 import { useColorScheme } from '../hooks/useColorScheme';
+import { useDrillStore } from '../state/drill-store-provider';
 
-export const FieldContainer = () => {
+export const FieldContainer = ({
+    setLabelOfInterest,
+}: {
+    setLabelOfInterest: (label: string) => void;
+}) => {
     const { isDarkMode } = useColorScheme();
+    const { label } = useDrillStore((state) => state);
+
     return (
         <>
             <Polygon
@@ -16,6 +23,9 @@ export const FieldContainer = () => {
                 ]}
                 color={isDarkMode ? '#106b21' : '#ffffff'}
                 strokeOpacity={1}
+                svgPolygonProps={{
+                    onClick: () => setLabelOfInterest(label),
+                }}
             />
 
             {/* end zones */}

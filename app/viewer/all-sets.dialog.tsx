@@ -19,13 +19,14 @@ export const AllSetsDialog = ({
     trigger,
     currentIndex,
     onSetSelect,
+    labelOfInterest,
 }: {
     trigger: React.ReactNode;
     currentIndex: number;
     onSetSelect?: (index: number) => void;
+    labelOfInterest: string;
 }) => {
-    const { label } = useDrillStore((store) => store);
-    const pages = dotData2025[label].dots;
+    const pages = dotData2025[labelOfInterest].dots;
     return (
         <Dialog>
             <DialogTrigger asChild>{trigger}</DialogTrigger>
